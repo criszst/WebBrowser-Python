@@ -1,5 +1,4 @@
-from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QTabWidget, QToolBar, QAction
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QToolBar, QAction
 from PyQt5.QtGui import QIcon
 
 class TabsMethods:
@@ -7,7 +6,7 @@ class TabsMethods:
         super().__init__()
 
     @staticmethod
-    def create_tabs(fun):
+    def create_tabs(fun: QMainWindow):
         tabs = QTabWidget()
         tabs.setDocumentMode(True)
         tabs.setTabsClosable(True)
@@ -18,7 +17,7 @@ class TabsMethods:
         return tabs
 
     @staticmethod
-    def create_navigation_toolbar(parent):
+    def create_navigation_toolbar(parent: QMainWindow):
         def goBack():
             parent.tabs.currentWidget().back()
 
@@ -40,6 +39,7 @@ class TabsMethods:
         reload_action.triggered.connect(reload)
         
         history_action = QAction(QIcon('./assets/icons/toolbar/history.png'), 'Ver o histórico', parent)
+    #   history_action.triggered.connect(history)
         
         nav_toolbar.addAction(back_action)
         nav_toolbar.addAction(front_action)
@@ -48,9 +48,3 @@ class TabsMethods:
         nav_toolbar.addAction(history_action)
 
         return nav_toolbar
-
-    @staticmethod
-    def create_action(text, parent, slot):
-        action = QAction(text, parent)
-        action.triggered.connect(slot)
-        return action

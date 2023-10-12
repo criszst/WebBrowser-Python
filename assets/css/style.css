@@ -29,13 +29,12 @@ QTabBar{
 QTabBar::tab {
     background-color: none;
     color: #fff;
-    padding: 8px 0px; /* 1: baixo 2: lado esquerdo*/
+    padding: 8px 20px; /* 1: baixo 2: lado esquerdo*/
     padding-left: 2px; /* cresce pro lado esquerdo /*/
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     padding-right:100px;
-    max-width:100px;
-    text-align: end;
+    text-align: start;
 }
 
 QTabBar::tab:!selected{
