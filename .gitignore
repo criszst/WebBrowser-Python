@@ -1,0 +1,11 @@
+/.idea
+/build
+/.vscode
+/dist
+**/__pycache__
+
+#Browser Interface Qt Designer
+/WebBrowserUi
+
+#ambiente
+.venv
