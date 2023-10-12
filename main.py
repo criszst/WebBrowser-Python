@@ -1,4 +1,3 @@
-import os
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QIcon
 from tabs import Tabs
@@ -7,7 +6,8 @@ import sys
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    with open("style.css", "r") as style:
+    
+    with open("assets/css/style.css", "r") as style:
         app.setStyleSheet(style.read())
         
     app.setApplicationName('ACS Browser')

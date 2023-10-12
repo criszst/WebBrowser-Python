@@ -47,7 +47,6 @@ class TabsMethods:
         nav_toolbar.addAction(reload_action)
         nav_toolbar.addAction(history_action)
 
-
         return nav_toolbar
 
     @staticmethod
@@ -55,4 +54,3 @@ class TabsMethods:
         action = QAction(text, parent)
         action.triggered.connect(slot)
         return action
-    

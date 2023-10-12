@@ -5,10 +5,10 @@ QWidget
 }
 
 QLineEdit{
-    font-family: 'Times New Roman', Times, serif;
+    font-family: Cambria Italic;
     border:2px solid transparent;
     border-radius:2px;
-    font-size:9pt;
+    font-size:10pt;
     background-color: #252836;
     selection-background-color: #8471a3fb;
 }
@@ -48,7 +48,7 @@ QTabBar::close-button {
 }
 
 QTabBar::close-button:hover{
-    image: url(./assets/icons/closedTab.png);
+    image: url(./assets/icons/tab/closedTab.png);
     background-color: #252836;
 }
 

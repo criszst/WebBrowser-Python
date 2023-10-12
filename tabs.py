@@ -56,17 +56,20 @@ class Tabs(QMainWindow):
         if i == -1:
             self.addNewTab()
             
+            
     def current_tab_changed(self, i):
         url = self.tabs.currentWidget().url()
 
         self.update_urlBar(url, self.tabs.currentWidget())
         self.update_title(self.tabs.currentWidget())
+        
 
     def close_current_tab(self, i):
         if self.tabs.count() < 2:
             return
 
         self.tabs.removeTab(i)
+        
 
     def update_title(self, browser):
         if browser != self.tabs.currentWidget():
@@ -74,7 +77,8 @@ class Tabs(QMainWindow):
 
         title = browser.page().title()
 
-        self.setWindowTitle(f'ACS TESTE - {title}')
+        self.setWindowTitle(f'ACS - {title}')
+        
 
     def update_urlBar(self, url, browser = None):
         if browser != self.tabs.currentWidget():
@@ -82,6 +86,7 @@ class Tabs(QMainWindow):
  
         self.urlBar.setText(url.toString())
         self.urlBar.setCursorPosition(0)
+        
         
     def goToUrl(self):
         url = QUrl(self.urlBar.text())
