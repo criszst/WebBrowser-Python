@@ -3,5 +3,5 @@
 
 Atualmente nao possui nenhuma função "especial", apenas as funcoes basicas de todo navegador (recarregar a pagina, voltar a pagina etc.)
 
-#Dependências
-> PyQt5 - backend
+# Dependências
+- PyQt5 - backend
