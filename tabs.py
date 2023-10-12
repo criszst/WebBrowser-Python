@@ -2,25 +2,20 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QMainWindow, QStatusBar, QLineEdit
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-from PyQt5 import QtWidgets
-
-
 class Tabs(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_ui()
-
-    def init_ui(self):
+        
+    def init_ui(self): 
         from tabsMethods import tabs_methods
-
+       
         self.tabs = tabs_methods.TabsMethods.create_tabs(self)
         
         self.setCentralWidget(self.tabs)
-        self.showMaximized()
 
         self.status_bar = QStatusBar()
         self.setStatusBar(self.status_bar)
-
         nav_toolbar = tabs_methods.TabsMethods.create_navigation_toolbar(self)
         self.addToolBar(nav_toolbar)
 
@@ -30,13 +25,16 @@ class Tabs(QMainWindow):
 
         self.addNewTab(QUrl('https://www.google.com'))
 
+        self.showMaximized()
         self.show()
         self.setWindowTitle('ACS Browser')
+        
+        
     
     def addNewTab(self, url=None, label="Blank"):
             
         if url is None:
-            url = QUrl('http://www.google.com')
+            url = QUrl('https://www.google.com')
 
         browser = QWebEngineView()
         browser.setUrl(url)
@@ -47,11 +45,12 @@ class Tabs(QMainWindow):
         browser.urlChanged.connect(lambda url, browser=browser:
                                    self.update_urlBar(url, browser))
 
-        browser.loadFinished.connect(lambda _, i=i, browser=browser:
-                                     self.tabs.setTabText(i, browser.page().title()))
+        browser.titleChanged.connect(lambda _, i=i, browser=browser:
+                                     self.tabs.setTabText(i, browser.page().title().split(' ')[0]))
         
         browser.iconChanged.connect(lambda _, browser=browser:
                                      self.tabs.setTabIcon(self.tabs.currentIndex(), browser.page().icon()))
+        
         
     def tab_open_doubleclick(self, i):
         if i == -1:
@@ -75,7 +74,7 @@ class Tabs(QMainWindow):
 
         title = browser.page().title()
 
-        self.setWindowTitle(f'ACRS - {title}')
+        self.setWindowTitle(f'ACS TESTE - {title}')
 
     def update_urlBar(self, url, browser = None):
         if browser != self.tabs.currentWidget():

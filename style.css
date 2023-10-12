@@ -1,0 +1,61 @@
+QWidget
+{
+    color: #b1b1b1;
+    background-color: #252836;
+}
+
+QLineEdit{
+    font-family: 'Times New Roman', Times, serif;
+    border:2px solid transparent;
+    border-radius:2px;
+    font-size:9pt;
+    background-color: #252836;
+    selection-background-color: #8471a3fb;
+}
+
+QToolBar {
+    border-color:#170733;
+    color: white;
+}
+
+QLineEdit:hover{
+    border-color:#2c0d611b
+}
+
+QTabBar{
+    background-color:#252836;
+}
+
+QTabBar::tab {
+    background-color: none;
+    color: #fff;
+    padding: 8px 0px; /* 1: baixo 2: lado esquerdo*/
+    padding-left: 2px; /* cresce pro lado esquerdo /*/
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding-right:100px;
+    max-width:100px;
+    text-align: end;
+}
+
+QTabBar::tab:!selected{
+    background-color: transparent;
+}
+
+QTabBar::close-button {
+    border: 1px solid transparent;
+    border-radius:3px;
+}
+
+QTabBar::close-button:hover{
+    image: url(./assets/icons/closedTab.png);
+    background-color: #252836;
+}
+
+QTabBar::tab:!selected:hover{
+    background-color:#222348;
+}
+
+QTabBar::tab:selected{
+    background-color: #170733;
+}
