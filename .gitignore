@@ -3,9 +3,14 @@
 /.vscode
 /dist
 **/__pycache__
+**ProjectSettings.json
+**VSWorkspaceState.json
+*.lock
+*.wsuo
+*.vsidx
 
-#Browser Interface Qt Designer
-/WebBrowserUi
+#data base
+*.sqlite
 
 #ambiente
 .venv

@@ -1,11 +1,15 @@
-from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget, QDialog
 from random import randint
 
 
-class windowHistory(QWidget):
+class windowHistory(QDialog):
     def __init__(self):
         super().__init__()
-        layout = QVBoxLayout()
-        self.label = QLabel("Another Window % d" % randint(0,100))
-        layout.addWidget(self.label)
-        self.setLayout(layout)
+        self.lay = QVBoxLayout()
+        self.init_ui()
+
+        
+    def init_ui(self):
+        self.label = QLabel('window')
+        self.lay.addWidget(self.label)
+        self.setLayout(self.lay)

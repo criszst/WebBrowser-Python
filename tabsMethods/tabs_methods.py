@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QMainWindow, QTabWidget, QToolBar, QAction
 from PyQt5.QtGui import QIcon
+#from history.window import windowHistory
 
 class TabsMethods:
     def __init__(self):
@@ -27,6 +28,9 @@ class TabsMethods:
         def reload():
             parent.tabs.currentWidget().reload()
             
+       # def history():
+       #     windowHistory().show()
+            
         nav_toolbar = QToolBar("Navegação")
         
         back_action = QAction(QIcon('./assets/icons/toolbar/back.png'), 'Voltar uma página', parent)
@@ -36,15 +40,18 @@ class TabsMethods:
         front_action.triggered.connect(goForward)
         
         reload_action = QAction(QIcon('./assets/icons/toolbar/reload.png'), 'Recarregar a página', parent)
+        reload_action.setShortcut('Ctrl+R')
         reload_action.triggered.connect(reload)
         
         history_action = QAction(QIcon('./assets/icons/toolbar/history.png'), 'Ver o histórico', parent)
-    #   history_action.triggered.connect(history)
+       # history_action.triggered.connect(history)
         
         nav_toolbar.addAction(back_action)
         nav_toolbar.addAction(front_action)
         
         nav_toolbar.addAction(reload_action)
         nav_toolbar.addAction(history_action)
+        
+        
 
         return nav_toolbar
