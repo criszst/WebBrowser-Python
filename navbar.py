@@ -1,29 +1,38 @@
-from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut
-from PyQt5.QtWebEngineWidgets import QWebEngineView 
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QMenu, QPushButton, QToolBar
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
-from tabsMethods.tabs_methods import TabsMethods
+
+from methods.tabs_methods import TabsMethods
+from methods.sidebar_methods import SideBarMethods
+#from handleNetwork.setCookie import Cookie
 from keyboard import is_pressed
 
-class Tabs(QMainWindow):
+class NavBar(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.init_ui()
+        self.init_tabs()
 
         
-    def init_ui(self): 
+    def init_tabs(self):
         self.tabs = TabsMethods.create_tabs(self)
         self.setCentralWidget(self.tabs)
+        self.getPage = QWebEngineView().page()
 
         nav_toolbar = TabsMethods.create_navigation_toolbar(self)
-        nav_toolbar.setMovable(False)
-
         self.addToolBar(nav_toolbar)
+        
+        self.sidebar = SideBarMethods.create_sidebar(self)
+        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, self.sidebar)
+        
+        
+        navBar = QToolBar("Navegação")
+        navBar.setMovable(False)
         
         self.urlBar = QLineEdit()
         self.urlBar.returnPressed.connect(self.goToUrl)
         nav_toolbar.addWidget(self.urlBar)
-
+        
         self.addNewTab()
         
         self.addShortcut = QShortcut('Ctrl+T', self)
@@ -31,10 +40,13 @@ class Tabs(QMainWindow):
         
         self.closeShortcut = QShortcut('Ctrl+W', self)
         self.closeShortcut.activated.connect(self.close_current_tab)
-
+        
+        #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
 
         self.showMaximized()
         self.setWindowTitle('ACS Browser')
+
+    
 
     
     def addNewTab(self, url = None, label="Blank"):
@@ -45,7 +57,7 @@ class Tabs(QMainWindow):
 
         browser = QWebEngineView()
         browser.setUrl(url)
-    
+
 
         currentTabIndex = self.tabs.addTab(browser, label)
         self.tabs.setCurrentIndex(currentTabIndex)
@@ -61,11 +73,10 @@ class Tabs(QMainWindow):
         
         browser.iconChanged.connect(lambda _, browser=browser:
                                      self.updateIcon(browser))
-        
-       # browser.page().profile().cookieStore().cookieAdded.connect(lambda _, browser=browser:
-       #                              Cookie().handle(browser))
-            
 
+        
+       # browser.page().profile().cookieStore().deleteAllCookies()
+                
     def goToUrl(self):
         url = QUrl(self.urlBar.text())
  
@@ -119,3 +130,11 @@ class Tabs(QMainWindow):
             self.close()
 
         self.tabs.removeTab(self.tabs.currentIndex())
+        
+    def zoomIn(self):
+        browser = QWebEngineView().page()
+        browser.setZoomFactor(browser.zoomFactor() + 0.1)
+
+    def zoomOut(self):
+        browser = QWebEngineView().page()
+        browser.setZoomFactor(browser.zoomFactor() - 0.1)

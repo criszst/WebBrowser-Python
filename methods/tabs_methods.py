@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QTabWidget, QToolBar, QAction
 from PyQt5.QtGui import QIcon
-#from history.window import windowHistory
 
 class TabsMethods:
     def __init__(self):
@@ -14,6 +13,9 @@ class TabsMethods:
         tabs.tabBarDoubleClicked.connect(fun.tab_open_doubleclick)
         tabs.currentChanged.connect(fun.current_tab_changed)
         tabs.tabCloseRequested.connect(fun.close_current_tab)
+        
+        with open("assets/css/tabBar.css", "r") as style:
+            tabs.setStyleSheet(style.read())
 
         return tabs
 
@@ -28,10 +30,8 @@ class TabsMethods:
         def reload():
             parent.tabs.currentWidget().reload()
             
-       # def history():
-       #     windowHistory().show()
-            
         nav_toolbar = QToolBar("Navegação")
+        nav_toolbar.setMovable(False)
         
         back_action = QAction(QIcon('./assets/icons/toolbar/back.png'), 'Voltar uma página', parent)
         back_action.triggered.connect(goBack)
@@ -43,15 +43,17 @@ class TabsMethods:
         reload_action.setShortcut('Ctrl+R')
         reload_action.triggered.connect(reload)
         
-        history_action = QAction(QIcon('./assets/icons/toolbar/history.png'), 'Ver o histórico', parent)
-       # history_action.triggered.connect(history)
+        ssl_certification = QAction(QIcon('./assets/icons/toolbar/ssl_certification'), 'A página é segura', parent)
+        
+        
         
         nav_toolbar.addAction(back_action)
         nav_toolbar.addAction(front_action)
         
         nav_toolbar.addAction(reload_action)
-        nav_toolbar.addAction(history_action)
         
+        nav_toolbar.addSeparator()
         
-
+        nav_toolbar.addAction(ssl_certification)
+        
         return nav_toolbar

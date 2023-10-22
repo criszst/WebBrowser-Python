@@ -1,0 +1,38 @@
+QToolBar {
+    border-color:#1f212e;
+    color: white;
+}
+
+QPushButton {
+    background-color: #252836;
+    border: 0px;
+    width: 50px; 
+    height: 50px;
+}
+
+
+
+QPushButton:hover {
+    background-color: #484d65;
+    border-radius: 7px;
+}
+
+
+
+#history_btn {
+    margin-top: 5px;
+}
+
+
+#zoomIn_btn {
+    margin-top: 5px;
+}
+
+#zoomOut_btn {
+    margin-top: 5px;
+}
+
+
+/* #config_btn {
+    margin-top: 700px;
+} */

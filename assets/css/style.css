@@ -6,55 +6,19 @@ QWidget
 
 QLineEdit{
     font-family: Cambria Italic;
-    border:2px solid transparent;
-    border-radius:2px;
-    font-size:10pt;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 10pt;
     background-color: #252836;
-    selection-background-color: #8471a3fb;
-}
-
-QToolBar {
-    border-color:#170733;
-    color: white;
+    selection-background-color: #5021ff;
 }
 
 QLineEdit:hover{
-    border-color:#2c0d611b
+    background-color: #484d65
 }
 
-QTabBar{
-    background-color:#252836;
-}
 
-QTabBar::tab {
-    background-color: none;
-    color: #fff;
-    padding: 8px 20px; /* 1: baixo 2: lado esquerdo*/
-    padding-left: 2px; /* cresce pro lado esquerdo /*/
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    padding-right:100px;
-    text-align: start;
-}
-
-QTabBar::tab:!selected{
-    background-color: transparent;
-}
-
-QTabBar::close-button {
-    border: 1px solid transparent;
-    border-radius:3px;
-}
-
-QTabBar::close-button:hover{
-    image: url(./assets/icons/tab/closedTab.png);
-    background-color: #252836;
-}
-
-QTabBar::tab:!selected:hover{
-    background-color:#222348;
-}
-
-QTabBar::tab:selected{
-    background-color: #170733;
+QToolBar {
+    border-color:#1f212e;
+    color: white;
 }

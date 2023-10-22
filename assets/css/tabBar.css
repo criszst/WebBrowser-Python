@@ -1,0 +1,31 @@
+QTabBar{
+    background-color:#1f212e;
+}
+
+QTabBar::tab {
+    background-color: #1f212e;
+    color: #fff;
+    padding: 8px 20px; /* 1: baixo 2: lado esquerdo*/
+    padding-left: 2px; /* cresce pro lado esquerdo /*/
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    padding-right:100px;
+}
+
+QTabBar::close-button {
+    border: 1px solid transparent;
+    border-radius:3px;
+}
+
+QTabBar::close-button:hover{
+    image: url(./assets/icons/tab/closedTab.png);
+    background-color: #484d65;
+}
+
+QTabBar::tab:!selected:hover{
+    background-color: #484d65;
+}
+
+QTabBar::tab:selected{
+    background-color: #484d65;
+}
