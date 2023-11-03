@@ -1,61 +1,87 @@
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QAction, QPushButton
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton, QLabel
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QUrl
+
+from history import historyPopup
 
 class SideBarMethods(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.historyRequested = None
 
-    @staticmethod
-    def create_sidebar(main: QMainWindow):
-        sidebar = QToolBar("SideBar")
+
+    def create_sidebar(self, main: QMainWindow):
+        sidebar = QToolBar("Barra Lateral")
         sidebar.setMovable(False)
         
+        label = QLabel()
+        
+        current_page = main.tabs.currentWidget()
+        zoom = current_page.zoomFactor
+        
+        def goToHome():
+            main.tabs.currentWidget().setUrl(QUrl('https://www.google.com'))
+            
+        def history():
+            if self.historyRequested is None:
+                self.historyRequested = historyPopup.WindowHistory()
+                self.historyRequested.show()
+            else:
+                self.historyRequested.close()
+                self.historyRequested = None
+
         def zoomIn():
-            main.zoomIn()
+            if current_page:
+                current_page.setZoomFactor(zoom() + 0.1)
+                formatted_zoom = f"Zoom atual: {current_page.zoomFactor():.1f}"
+                
+                label.setText(formatted_zoom)
+                
+                main.nav_toolbar.addWidget(label)
+                label.destroy()
 
         def zoomOut():
-            main.zoomOut()
-        
-        home_action = QAction(QIcon('./assets/icons/sidebar/casa.png'), 'Voltar ao Google', main)
-        #home_action.triggered.connect(goBack)
-        
-        history_action = QAction(QIcon('./assets/icons/sidebar/history.png'), 'Ver o histórico', main)
-        #history_action.triggered.connect(goBack)
-        
-        zoomIn_action = QAction(QIcon('./assets/icons/sidebar/zoomIn.png'), 'Ver o histórico', main)
-        zoomIn_action.triggered.connect(zoomIn)
-        
-        zoomOut_action = QAction(QIcon('./assets/icons/sidebar/zoomOut.png'), 'Ver o histórico', main)
-        zoomOut_action.triggered.connect(zoomOut)
-        
-        config_action = QAction(QIcon('./assets/icons/sidebar/configIcon.png'), 'Ver o histórico', main)
-        #config_action.triggered.connect(goBack)
-        
-        
+            if current_page:
+                current_page.setZoomFactor(zoom() - 0.1)
+                formatted_zoom = f"Zoom atual: {current_page.zoomFactor():.1f}"
+                
+                label.setText(formatted_zoom)
+                
+                main.nav_toolbar.addWidget(label)
+                label.destroy()
+
 
         home_btn = QPushButton()
-        home_btn.setIcon(home_action.icon())
+        home_btn.setIcon(QIcon('./assets/icons/sidebar/casa.png'))
         home_btn.setObjectName('home_btn')
-
+        home_btn.setToolTip('Ir para o google')
+        home_btn.clicked.connect(goToHome)
+        
 
         history_btn = QPushButton()
-        history_btn.setIcon(history_action.icon())
+        history_btn.setIcon(QIcon('./assets/icons/sidebar/history.png'))
         history_btn.setObjectName('history_btn')
+        history_btn.setToolTip('Ver o histórico')
+        history_btn.clicked.connect(history)
 
         
         zoomIn_btn = QPushButton()
-        zoomIn_btn.setIcon(zoomIn_action.icon())
+        zoomIn_btn.setIcon(QIcon('./assets/icons/sidebar/zoomIn.png'))
         zoomIn_btn.setObjectName('zoomIn_btn')
+        zoomIn_btn.setToolTip('Aumentar o zoom')
+        zoomIn_btn.clicked.connect(zoomIn)
 
         
         zoomOut_btn = QPushButton()
-        zoomOut_btn.setIcon(zoomOut_action.icon())
+        zoomOut_btn.setIcon(QIcon('./assets/icons/sidebar/zoomOut.png'))
         zoomOut_btn.setObjectName('zoomOut_btn')
+        zoomOut_btn.setToolTip('Diminuir o zoom')
+        zoomOut_btn.clicked.connect(zoomOut)
 
         
         config_btn = QPushButton()
-        config_btn.setIcon(config_action.icon())
+        config_btn.setIcon(QIcon('./assets/icons/sidebar/configIcon.png'))
+        config_btn.setToolTip('Acessar as configurações')
         config_btn.setObjectName('config_btn')
         
         

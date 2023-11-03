@@ -9,7 +9,7 @@
 *.wsuo
 *.vsidx
 
-#data base
+#sqlite
 *.sqlite
 
 #ambiente
