@@ -1,9 +1,9 @@
-# WebBrowser-Python
+# Browser
 ![browse-screenshot](https://github.com/Cristi4nSt/WebBrowser-Python/blob/main/assets/browser/browserImage.png?raw=true)
 
-Atualmente nao possui nenhuma função "especial", apenas as funcoes basicas de todo navegador (recarregar a pagina, voltar a pagina etc.)
+Currently have basic functions of every browser (reload the page, return the page, view history etc.)
 
-Me inspirei no Opera One para criar a interface e as cores 
+I was inspired by Opera One to create the interface and colors
 
-# Dependências
-- PyQt5 - backend
+# Requirements
+- PyQt5
