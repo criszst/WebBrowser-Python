@@ -1,7 +1,9 @@
+from re import T
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QToolBar
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
+from methods.database_methods import DBMethods
 from methods.tabs_methods import TabsMethods
 from methods.sidebar_methods import SideBarMethods
 #from handleNetwork.setCookie import Cookie
@@ -32,7 +34,6 @@ class NavBar(QMainWindow):
 
         self.addNewTab()
         
-        
         self.addShortcut = QShortcut('Ctrl+T', self)
         self.addShortcut.activated.connect(self.addNewTab)
         
@@ -54,7 +55,7 @@ class NavBar(QMainWindow):
             url = QUrl('https://www.google.com')
 
         browser = QWebEngineView()
-        browser.setUrl(url)
+        browser.load(url)
 
         currentTabIndex = self.tabs.addTab(browser, label)
         self.tabs.setCurrentIndex(currentTabIndex)
@@ -73,6 +74,8 @@ class NavBar(QMainWindow):
         
         
        # browser.page().profile().cookieStore().deleteAllCookies()
+       
+    
                 
     def goToUrl(self):
         url = QUrl(self.urlBar.text())
@@ -123,30 +126,27 @@ class NavBar(QMainWindow):
 
         self.tabs.removeTab(self.tabs.currentIndex())
         
-        
-        
-    def changeHistory(self):
+    def saveTabs(self):
         title = self.tabs.currentWidget().page().title()
         
         url = str(self.tabs.currentWidget().page().url())
         url = url[19 : len(url) - 2]
         
-        date = datetime.datetime.now()
-        formattedPtBr = date.strftime('%d/%m/%Y %H:%M:%S')
         
-        conn = sqlite3.connect("browserHistory.db", check_same_thread=False)
+        
+    def changeHistory(self):
+        title = self.tabs.currentWidget().page().title()
+        url = DBMethods().converUrlToStr(self.tabs.currentWidget().page().url())
+        date = DBMethods().convertDateToBR(datetime.datetime.now())
+        
+        conn = sqlite3.connect("browser.db", check_same_thread=False)
         cursor = conn.cursor()
         
-        viewLog = cursor.execute('SELECT * FROM history').fetchall()
-        
-        for i in range(len(viewLog)):
-            if url == viewLog[i][2]:
-                cursor.execute('DELETE FROM history WHERE url = ?', [url])
+        DBMethods().replaceOldData('history', 'url', url, 2)
 
-        
         cursor.execute(
             "INSERT INTO history (title,url,date) VALUES (:title,:url,:date)",
-            {"title": title, "url": url, "date": formattedPtBr}
-            )
+            {"title": title, "url": url, "date": date}
+                      )
         
         conn.commit()

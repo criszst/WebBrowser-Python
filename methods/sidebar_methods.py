@@ -1,8 +1,15 @@
+from re import A
 from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton, QLabel
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl
 
+from methods.database_methods import DBMethods
 from history import historyPopup
+
+import sqlite3
+
+conn = sqlite3.connect("browser.db", check_same_thread=False)
+cursor = conn.cursor()
 
 class SideBarMethods(QMainWindow):
     def __init__(self):
@@ -17,6 +24,10 @@ class SideBarMethods(QMainWindow):
         label = QLabel()
         
         current_page = main.tabs.currentWidget()
+       # anotherUrl = main.tabs.currentWidget().page().url()
+        
+        urlTOStr = DBMethods().converUrlToStr(current_page.page().url())
+        
         zoom = current_page.zoomFactor
         
         def goToHome():
@@ -33,20 +44,34 @@ class SideBarMethods(QMainWindow):
         def zoomIn():
             if current_page:
                 current_page.setZoomFactor(zoom() + 0.1)
+                #DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
+                cursor.execute(
+                    "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
+                    {"url": urlTOStr, "zoomFactor": current_page.zoomFactor()}
+                )
+                
+                conn.commit()
                 formatted_zoom = f"Zoom atual: {current_page.zoomFactor():.1f}"
                 
                 label.setText(formatted_zoom)
-                
+                #print(anotherUrl)
                 main.nav_toolbar.addWidget(label)
                 label.destroy()
 
         def zoomOut():
             if current_page:
                 current_page.setZoomFactor(zoom() - 0.1)
+                #DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
+                cursor.execute(
+                    "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
+                    {"url": urlTOStr, "zoomFactor": current_page.zoomFactor()}
+                )
+                
+                conn.commit()
                 formatted_zoom = f"Zoom atual: {current_page.zoomFactor():.1f}"
                 
                 label.setText(formatted_zoom)
-                
+                #print(anotherUrl)
                 main.nav_toolbar.addWidget(label)
                 label.destroy()
 

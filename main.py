@@ -1,8 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QIcon
 
-from navbar import NavBar
-
+import navbar
 import sys
 
 if __name__ == '__main__':
@@ -16,5 +15,5 @@ if __name__ == '__main__':
     app.setDesktopFileName('ACS Browser')
     app.setWindowIcon(QIcon('assets/logo/browserLogo.png'))
    
-    window = NavBar()
+    window = navbar.NavBar()
     sys.exit(app.exec_())

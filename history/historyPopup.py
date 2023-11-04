@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, QUrl
 import sqlite3
 import navbar
 
-conn = sqlite3.connect("browserHistory.db", check_same_thread=False)
+conn = sqlite3.connect("browser.db", check_same_thread=False)
 cursor = conn.cursor()
 
 class WindowHistory(QWidget):
@@ -29,13 +29,13 @@ class WindowHistory(QWidget):
         
         self.setLayout(layout)    
         self.setGeometry(70, 140, 400, 420)
-                                 #Width #Height
+                         #X  #Y  #Width #Height
         
         self.setWindowFlags(Qt.WindowType.Popup)
         
     def addItemHistory(self):
-        data = cursor.execute("SELECT * FROM history")
-        siteList = data.fetchall()
+        info = cursor.execute("SELECT * FROM history")
+        siteList = info.fetchall()
         
         for items in siteList:
             siteFormatted = f'{items[1]} - {items[3]}'   
@@ -52,6 +52,7 @@ class WindowHistory(QWidget):
         url = info.fetchall()[0][2]
         
         mainWindow = navbar.NavBar()
+        #mainWindow.tabs.setCurrentWidget(mainWindow.returnCurrentTab(url=QUrl(url)))
         mainWindow.tabs.currentWidget().setUrl(QUrl(url))
         
         
