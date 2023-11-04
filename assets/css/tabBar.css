@@ -6,7 +6,7 @@ QTabBar::tab {
     background-color: #1f212e;
     color: #fff;
     padding: 8px 20px; /* 1: baixo 2: lado esquerdo*/
-    padding-left: 2px; /* cresce pro lado esquerdo /*/
+    padding-left: 2px; /* cresce pro lado esquerdo */
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
     padding-right:100px;

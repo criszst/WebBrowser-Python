@@ -12,5 +12,5 @@
 #sqlite
 *.sqlite
 
-#ambiente
+#venv
 .venv
