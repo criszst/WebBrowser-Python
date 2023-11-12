@@ -1,12 +1,12 @@
 # Browser
 ![browse-screenshot](https://github.com/Cristi4nSt/WebBrowser-Python/blob/main/assets/browser/browserImage.png?raw=true)
-I was inspired by Opera One to create the interface and colors
-
+Inspirado no Opera One
 
 # Funcs
-Currently there are basic functions of each browser (reload the page, return the page, view history, etc.)
-The zoom is saved in the DataBase, so if the browser closes, it will open the page with the previously set zoom
+Atualmente possui funções básicas de todo navegador (recarregar a página, voltar uma página, visualizar histórico, etc.)
+
+O zoom é salvo na DataBase, então caso você feche o navegador e abra depois, o zoom anteriormente definido ainda continuará
 
 # Requirements
-- Python 3.12.0 or superior
+- Python 3.12.0 ou superior
 - PyQt5
