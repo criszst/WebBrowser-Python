@@ -1,7 +1,7 @@
 from PyQt5.QtCore import QUrl
+from PyQt5.QtWidgets import QWidget
 
-import sqlite3
-import datetime
+import sqlite3, datetime
 
 class DBMethods():
     def __init__(self):
@@ -19,7 +19,7 @@ class DBMethods():
         
         return formattedPtBr
     
-    def replaceOldData(self, db: str, dataName: str, dataType, numberDataInTable: int):
+    def replaceOldData(self, db: str, dataName: str, dataType, numberDataInTable: int) -> None:
         viewLog = self.cursor.execute(f'SELECT * FROM {db}').fetchall()
         
         for i in range(len(viewLog)):
@@ -27,3 +27,15 @@ class DBMethods():
                 self.cursor.execute(f'DELETE FROM {db} WHERE {dataName} = ?', [dataType])
                 
         self.conn.commit()
+        self.conn.close()
+        
+    def getCurrentZoomPage(self, currentTab: QWidget):
+        urlStr = DBMethods().converUrlToStr(currentTab.page().url())
+        getInfoFromUrl = self.cursor.execute('SELECT * FROM zoom WHERE url = ?', [urlStr]).fetchall()
+        
+        zoom = 1.0
+    
+        for i in range(len(getInfoFromUrl)):
+            zoom = getInfoFromUrl[i][2]
+
+        return zoom

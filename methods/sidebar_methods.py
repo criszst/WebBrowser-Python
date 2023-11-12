@@ -21,14 +21,7 @@ class SideBarMethods(QMainWindow):
         sidebar = QToolBar("Barra Lateral")
         sidebar.setMovable(False)
         
-        label = QLabel()
-        
-        current_page = main.tabs.currentWidget()
-       # anotherUrl = main.tabs.currentWidget().page().url()
-        
-        urlTOStr = DBMethods().converUrlToStr(current_page.page().url())
-        
-        zoom = current_page.zoomFactor
+        main.label.setText(f"Zoom atual: {main.tabs.currentWidget().zoomFactor():.1f}")
         
         def goToHome():
             main.tabs.currentWidget().setUrl(QUrl('https://www.google.com'))
@@ -40,40 +33,41 @@ class SideBarMethods(QMainWindow):
             else:
                 self.historyRequested.close()
                 self.historyRequested = None
+                
 
         def zoomIn():
-            if current_page:
-                current_page.setZoomFactor(zoom() + 0.1)
-                #DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
-                cursor.execute(
-                    "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
-                    {"url": urlTOStr, "zoomFactor": current_page.zoomFactor()}
-                )
-                
-                conn.commit()
-                formatted_zoom = f"Zoom atual: {current_page.zoomFactor():.1f}"
-                
-                label.setText(formatted_zoom)
-                #print(anotherUrl)
-                main.nav_toolbar.addWidget(label)
-                label.destroy()
+            current_tab = main.tabs.currentWidget()
+            current_tab.setZoomFactor(main.tabs.currentWidget().zoomFactor() + 0.1)
+            
+            urlTOStr = DBMethods().converUrlToStr(main.tabs.currentWidget().page().url())
 
+            DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
+                
+            cursor.execute(
+                "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
+                {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor()}
+            )
+                
+            conn.commit()
+                
+            main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
+            
         def zoomOut():
-            if current_page:
-                current_page.setZoomFactor(zoom() - 0.1)
-                #DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
-                cursor.execute(
-                    "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
-                    {"url": urlTOStr, "zoomFactor": current_page.zoomFactor()}
-                )
+            current_tab = main.tabs.currentWidget()
+            current_tab.setZoomFactor(main.tabs.currentWidget().zoomFactor() - 0.1)
+            
+            urlTOStr = DBMethods().converUrlToStr(main.tabs.currentWidget().page().url())
+            
+            DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
+            
+            cursor.execute(
+                "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
+                {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor()}
+            )
                 
-                conn.commit()
-                formatted_zoom = f"Zoom atual: {current_page.zoomFactor():.1f}"
+            conn.commit()
                 
-                label.setText(formatted_zoom)
-                #print(anotherUrl)
-                main.nav_toolbar.addWidget(label)
-                label.destroy()
+            main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
 
 
         home_btn = QPushButton()
@@ -91,7 +85,7 @@ class SideBarMethods(QMainWindow):
 
         
         zoomIn_btn = QPushButton()
-        zoomIn_btn.setIcon(QIcon('./assets/icons/sidebar/zoomIn.png'))
+        zoomIn_btn.setIcon(QIcon('./assets/icons/sidebar/zoomIn.png'))  
         zoomIn_btn.setObjectName('zoomIn_btn')
         zoomIn_btn.setToolTip('Aumentar o zoom')
         zoomIn_btn.clicked.connect(zoomIn)

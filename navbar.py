@@ -1,6 +1,5 @@
-from re import T
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QToolBar
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QToolBar, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 from methods.database_methods import DBMethods
@@ -8,9 +7,7 @@ from methods.tabs_methods import TabsMethods
 from methods.sidebar_methods import SideBarMethods
 #from handleNetwork.setCookie import Cookie
 
-import sys
-import sqlite3
-import datetime
+import sys, sqlite3, datetime
 
 class NavBar(QMainWindow):
     def __init__(self):
@@ -19,18 +16,22 @@ class NavBar(QMainWindow):
 
         
     def init_tabs(self):
+        self.conn = sqlite3.connect("browser.db", check_same_thread=False)
+        self.crsor = self.conn.cursor()
+        
         self.tabs = TabsMethods.create_tabs(self) 
         self.setCentralWidget(self.tabs)
 
         self.nav_toolbar = TabsMethods.create_navigation_toolbar(self)
         self.addToolBar(self.nav_toolbar)
 
-        navBar = QToolBar("Navegação")
-        navBar.setMovable(False)
         
         self.urlBar = QLineEdit()
         self.urlBar.returnPressed.connect(self.goToUrl)
         self.nav_toolbar.addWidget(self.urlBar)
+        
+        self.label = QLabel()
+        self.nav_toolbar.addWidget(self.label)
 
         self.addNewTab()
         
@@ -41,14 +42,13 @@ class NavBar(QMainWindow):
         self.closeShortcut.activated.connect(self.close_current_tab)
         
         #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
-        
-        #vou ter que colocar aqui pq o obj la em cima nao carrega, ai da erro de nonetype (sofro de uma relacao de amor e odio com python pq meuDeus)
-        self.sidebar = SideBarMethods().create_sidebar(self)
-        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, self.sidebar)
 
+        self.saveTabs()    
 
         self.showMaximized()
         self.setWindowTitle('ACS Browser')
+        
+        
     
     def addNewTab(self, url = None, label="Blank"):
         if url is None or url == ' ':
@@ -70,11 +70,12 @@ class NavBar(QMainWindow):
         browser.iconChanged.connect(lambda _, browser=browser:
                                      self.updateIcon(browser))
         
-        browser.loadFinished.connect(self.changeHistory)
+        browser.loadFinished.connect(self.loadDB_AddSideBar)
         
         
        # browser.page().profile().cookieStore().deleteAllCookies()
        
+    
     
                 
     def goToUrl(self):
@@ -83,7 +84,6 @@ class NavBar(QMainWindow):
             url.setScheme('https')
  
         self.tabs.currentWidget().setUrl(url)
-        
     
     def tab_open_doubleclick(self, currentTabIndex):
         if currentTabIndex == -1:
@@ -126,27 +126,39 @@ class NavBar(QMainWindow):
 
         self.tabs.removeTab(self.tabs.currentIndex())
         
-    def saveTabs(self):
-        title = self.tabs.currentWidget().page().title()
         
+    def saveTabs(self):        
         url = str(self.tabs.currentWidget().page().url())
         url = url[19 : len(url) - 2]
         
+        log = self.crsor.execute('SELECT * FROM tabs').fetchall()
         
+        for i in range(len(log)):
+            print(i)
         
-    def changeHistory(self):
+    def loadDB_AddSideBar(self):
         title = self.tabs.currentWidget().page().title()
         url = DBMethods().converUrlToStr(self.tabs.currentWidget().page().url())
         date = DBMethods().convertDateToBR(datetime.datetime.now())
-        
-        conn = sqlite3.connect("browser.db", check_same_thread=False)
-        cursor = conn.cursor()
-        
+    
         DBMethods().replaceOldData('history', 'url', url, 2)
 
-        cursor.execute(
+
+        self.crsor.execute(
             "INSERT INTO history (title,url,date) VALUES (:title,:url,:date)",
             {"title": title, "url": url, "date": date}
                       )
         
-        conn.commit()
+        self.conn.commit()
+        
+        currentZoom = DBMethods().getCurrentZoomPage(self.tabs.currentWidget())
+        self.tabs.currentWidget().setZoomFactor(float(currentZoom))
+
+        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
+        
+
+        
+
+        
+        
+        
