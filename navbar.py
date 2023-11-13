@@ -82,12 +82,12 @@ class NavBar(QMainWindow):
         url = QUrl(self.urlBar.text())
         
         valid_url = re.compile(
-        r'^(?:http|ftp)s?://'  # http:// o https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # Dominio...
-        r'localhost|'  # localhost...
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...o dirección IP
-        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...o [dirección IPv6]
-        r'(?::\d+)?'  # self.urlBar.text()Opción de puerto
+        r'^(?:http|ftp)s?://' # http:// ou https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' # Dominio
+        r'localhost|' # localhost
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'
+        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'
+        r'(?::\d+)?'
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
         
         print(re.match(valid_url, 'netflix.com'))
