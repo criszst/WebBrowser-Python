@@ -20,7 +20,3 @@ class Cookie:
         print(qt_cookie)
 
         return qt_cookie
-        
-
-    
-    
