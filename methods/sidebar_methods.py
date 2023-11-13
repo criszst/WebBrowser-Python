@@ -4,7 +4,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl
 
 from methods.database_methods import DBMethods
-from history import historyPopup
+from history.historyPopup import WindowHistory
+from config.configPopup import ConfigPage
 
 import sqlite3
 
@@ -15,20 +16,21 @@ class SideBarMethods(QMainWindow):
     def __init__(self):
         super().__init__()
         self.historyRequested = None
+        self.configRequested = None
 
 
     def create_sidebar(self, main: QMainWindow):
         sidebar = QToolBar("Barra Lateral")
         sidebar.setMovable(False)
         
-        main.label.setText(f"Zoom atual: {main.tabs.currentWidget().zoomFactor():.1f}")
+        main.label.setText(f"Zoom atual: {DBMethods().getCurrentZoomPage(main.tabs.currentWidget().page().url()):.1f}")
         
         def goToHome():
             main.tabs.currentWidget().setUrl(QUrl('https://www.google.com'))
             
         def history():
             if self.historyRequested is None:
-                self.historyRequested = historyPopup.WindowHistory()
+                self.historyRequested = WindowHistory()
                 self.historyRequested.show()
             else:
                 self.historyRequested.close()
@@ -39,7 +41,7 @@ class SideBarMethods(QMainWindow):
             current_tab = main.tabs.currentWidget()
             current_tab.setZoomFactor(main.tabs.currentWidget().zoomFactor() + 0.1)
             
-            urlTOStr = DBMethods().converUrlToStr(main.tabs.currentWidget().page().url())
+            urlTOStr = DBMethods().convertUrlToStr(main.tabs.currentWidget().page().url())
 
             DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
                 
@@ -49,14 +51,15 @@ class SideBarMethods(QMainWindow):
             )
                 
             conn.commit()
-                
+            
+
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
             
         def zoomOut():
             current_tab = main.tabs.currentWidget()
             current_tab.setZoomFactor(main.tabs.currentWidget().zoomFactor() - 0.1)
             
-            urlTOStr = DBMethods().converUrlToStr(main.tabs.currentWidget().page().url())
+            urlTOStr = DBMethods().convertUrlToStr(main.tabs.currentWidget().page().url())
             
             DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
             
@@ -66,8 +69,16 @@ class SideBarMethods(QMainWindow):
             )
                 
             conn.commit()
-                
+            
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
+            
+        def showConfig():
+         if self.configRequested is None:
+                self.configRequested = ConfigPage()
+                self.configRequested.show()
+         else:
+                self.configRequested.close()
+                self.configRequested = None
 
 
         home_btn = QPushButton()
@@ -102,6 +113,7 @@ class SideBarMethods(QMainWindow):
         config_btn.setIcon(QIcon('./assets/icons/sidebar/configIcon.png'))
         config_btn.setToolTip('Acessar as configurações')
         config_btn.setObjectName('config_btn')
+        config_btn.clicked.connect(showConfig)
         
         
     

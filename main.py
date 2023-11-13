@@ -11,7 +11,7 @@ if __name__ == '__main__':
         
     app.setApplicationName('ACS Browser')
     app.setDesktopFileName('ACS Browser')
-    app.setWindowIcon(QIcon('assets/logo/browserLogo.png'))
+    app.setWindowIcon(QIcon('assets/logo/browser.png'))
    
     window = navbar.NavBar()
     sys.exit(app.exec_())

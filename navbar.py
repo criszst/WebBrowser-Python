@@ -1,3 +1,4 @@
+import re
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QToolBar, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
@@ -42,9 +43,7 @@ class NavBar(QMainWindow):
         self.closeShortcut.activated.connect(self.close_current_tab)
         
         #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
-
-        self.saveTabs()    
-
+        
         self.showMaximized()
         self.setWindowTitle('ACS Browser')
         
@@ -70,20 +69,38 @@ class NavBar(QMainWindow):
         browser.iconChanged.connect(lambda _, browser=browser:
                                      self.updateIcon(browser))
         
-        browser.loadFinished.connect(self.loadDB_AddSideBar)
+        browser.loadFinished.connect(lambda _, browser=browser:
+                                     self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self)))
+        
+        browser.page().loadFinished.connect(self.loadDBMethods)
         
         
        # browser.page().profile().cookieStore().deleteAllCookies()
        
-    
-    
                 
     def goToUrl(self):
         url = QUrl(self.urlBar.text())
-        if url.scheme() == '':
+        
+        valid_url = re.compile(
+        r'^(?:http|ftp)s?://'  # http:// o https://
+        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|'  # Dominio...
+        r'localhost|'  # localhost...
+        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'  # ...o dirección IP
+        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'  # ...o [dirección IPv6]
+        r'(?::\d+)?'  # self.urlBar.text()Opción de puerto
+        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+        
+        print(re.match(valid_url, 'netflix.com'))
+        
+        if not re.match(valid_url, self.urlBar.text()):
+            url = f'https://www.google.com/search?q={self.urlBar.text()}'
+            
+        elif re.match(valid_url, self.urlBar.text()) or url.scheme() == '':
             url.setScheme('https')
+            
+        self.tabs.currentWidget().load(QUrl.fromUserInput(url))
  
-        self.tabs.currentWidget().setUrl(url)
+        
     
     def tab_open_doubleclick(self, currentTabIndex):
         if currentTabIndex == -1:
@@ -127,18 +144,9 @@ class NavBar(QMainWindow):
         self.tabs.removeTab(self.tabs.currentIndex())
         
         
-    def saveTabs(self):        
-        url = str(self.tabs.currentWidget().page().url())
-        url = url[19 : len(url) - 2]
-        
-        log = self.crsor.execute('SELECT * FROM tabs').fetchall()
-        
-        for i in range(len(log)):
-            print(i)
-        
-    def loadDB_AddSideBar(self):
+    def loadDBMethods(self):
         title = self.tabs.currentWidget().page().title()
-        url = DBMethods().converUrlToStr(self.tabs.currentWidget().page().url())
+        url = DBMethods().convertUrlToStr(self.tabs.currentWidget().page().url())
         date = DBMethods().convertDateToBR(datetime.datetime.now())
     
         DBMethods().replaceOldData('history', 'url', url, 2)
@@ -151,14 +159,5 @@ class NavBar(QMainWindow):
         
         self.conn.commit()
         
-        currentZoom = DBMethods().getCurrentZoomPage(self.tabs.currentWidget())
-        self.tabs.currentWidget().setZoomFactor(float(currentZoom))
-
-        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
-        
-
-        
-
-        
-        
-        
+        zoomInDB = DBMethods().getCurrentZoomPage(self.tabs.currentWidget().page().url())
+        self.tabs.currentWidget().setZoomFactor(float(zoomInDB))

@@ -7,17 +7,20 @@ class DBMethods():
     def __init__(self):
         self.conn = sqlite3.connect('browser.db', check_same_thread=False)
         self.cursor = self.conn.cursor()
+        
     
-    def converUrlToStr(self, url: QUrl) -> str:
+    def convertUrlToStr(self, url: QUrl) -> str:
         urlConverted = str(url)
         urlConverted = urlConverted[19 : len(urlConverted) - 2]
         
         return urlConverted
     
+    
     def convertDateToBR(self, date: datetime.date) -> str:
         formattedPtBr = date.strftime('%d/%m/%Y %H:%M:%S')
         
         return formattedPtBr
+    
     
     def replaceOldData(self, db: str, dataName: str, dataType, numberDataInTable: int) -> None:
         viewLog = self.cursor.execute(f'SELECT * FROM {db}').fetchall()
@@ -29,8 +32,9 @@ class DBMethods():
         self.conn.commit()
         self.conn.close()
         
-    def getCurrentZoomPage(self, currentTab: QWidget):
-        urlStr = DBMethods().converUrlToStr(currentTab.page().url())
+        
+    def getCurrentZoomPage(self, currentUrl: QUrl) -> float:
+        urlStr = self.convertUrlToStr(currentUrl)
         getInfoFromUrl = self.cursor.execute('SELECT * FROM zoom WHERE url = ?', [urlStr]).fetchall()
         
         zoom = 1.0
@@ -38,4 +42,4 @@ class DBMethods():
         for i in range(len(getInfoFromUrl)):
             zoom = getInfoFromUrl[i][2]
 
-        return zoom
+        return float(zoom)
