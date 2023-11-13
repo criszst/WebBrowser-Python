@@ -155,10 +155,3 @@ class NavBar(QMainWindow):
         self.tabs.currentWidget().setZoomFactor(float(currentZoom))
 
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
-        
-
-        
-
-        
-        
-        
