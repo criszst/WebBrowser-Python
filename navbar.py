@@ -80,23 +80,20 @@ class NavBar(QMainWindow):
                 
     def goToUrl(self):
         url = QUrl(self.urlBar.text())
+        urlBarTxt = self.urlBar.text()
         
         valid_url = re.compile(
-        r'^(?:http|ftp)s?://' # http:// ou https://
-        r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' # Dominio
-        r'localhost|' # localhost
-        r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|'
-        r'\[?[A-F0-9]*:[A-F0-9:]+\]?)'
-        r'(?::\d+)?'
-        r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+    r"^(http|https)?:?(\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
+        )
         
-        print(re.match(valid_url, 'netflix.com'))
-        
-        if not re.match(valid_url, self.urlBar.text()):
-            url = f'https://www.google.com/search?q={self.urlBar.text()}'
+        if valid_url.search(urlBarTxt) and not any(
+            i in urlBarTxt for i in ("http://", "https://", "file:///")
+        ):
+            url = f'https://{urlBarTxt}'
             
-        elif re.match(valid_url, self.urlBar.text()) or url.scheme() == '':
-            url.setScheme('https')
+            
+        elif '/' not in urlBarTxt:
+            url = f'https://www.google.com/search?q={self.urlBar.text()}'
             
         self.tabs.currentWidget().load(QUrl.fromUserInput(url))
  
