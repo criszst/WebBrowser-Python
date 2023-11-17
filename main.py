@@ -10,7 +10,6 @@ if __name__ == '__main__':
         app.setStyleSheet(style.read())
         
     app.setApplicationName('ACS Browser')
-    app.setDesktopFileName('ACS Browser')
     app.setWindowIcon(QIcon('assets/logo/browser.png'))
    
     window = navbar.NavBar()

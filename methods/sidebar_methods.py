@@ -1,5 +1,4 @@
-from re import A
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton, QLabel
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl
 

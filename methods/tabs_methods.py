@@ -46,7 +46,6 @@ class TabsMethods:
         ssl_certification = QAction(QIcon('./assets/icons/toolbar/ssl_certification'), 'A página é segura', parent)
         
         
-        
         nav_toolbar.addAction(back_action)
         nav_toolbar.addAction(front_action)
         
