@@ -13,4 +13,6 @@ if __name__ == '__main__':
     app.setWindowIcon(QIcon('assets/logo/browser.png'))
    
     window = navbar.NavBar()
+    
+
     sys.exit(app.exec_())

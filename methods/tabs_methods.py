@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import QMainWindow, QTabWidget, QToolBar, QAction
 from PyQt5.QtGui import QIcon
 
-class TabsMethods:
+class TabsMethods(QTabWidget):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def create_tabs(fun: QMainWindow):
+
+    def create_tabs(self, fun: QMainWindow):
         tabs = QTabWidget()
         tabs.setDocumentMode(True)
         tabs.setTabsClosable(True)
@@ -19,8 +19,8 @@ class TabsMethods:
 
         return tabs
 
-    @staticmethod
-    def create_navigation_toolbar(parent: QMainWindow):
+
+    def create_navigation_toolbar(self, parent: QMainWindow):
         def goBack():
             parent.tabs.currentWidget().back()
 
