@@ -2,7 +2,7 @@ import re
 from PyQt5 import QtCore
 
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QLabel
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QLabel, QApplication
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 
 from methods.database_methods import DBMethods
@@ -12,31 +12,18 @@ from methods.sidebar_methods import SideBarMethods
 
 import sys, sqlite3, datetime
 
-class customWebEnginePage(QWebEnginePage):
-    def createWindow(self, _type):
-        page = customWebEnginePage(self)
-        page.urlChanged.connect(self.on_url_changed)
-        return page
-
-    @QtCore.pyqtSlot(QtCore.QUrl)
-    def on_url_changed(self, url):
-        page = self.sender()
-        self.setUrl(url)
-        page.deleteLater()
-
 class NavBar(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_tabs()
 
-        
     def init_tabs(self):
         self.conn = sqlite3.connect("browser.db", check_same_thread=False)
         self.crsor = self.conn.cursor()
         
         self.tabs = TabsMethods().create_tabs(self) 
         self.setCentralWidget(self.tabs)
-
+        
         self.nav_toolbar = TabsMethods().create_navigation_toolbar(self)
         self.addToolBar(self.nav_toolbar)
 
@@ -48,7 +35,8 @@ class NavBar(QMainWindow):
         
         self.label = QLabel()
         self.nav_toolbar.addWidget(self.label)
-        
+    
+
         self.addShortcut = QShortcut('Ctrl+T', self)
         self.addShortcut.activated.connect(self.addNewTab)
         
@@ -57,12 +45,12 @@ class NavBar(QMainWindow):
         
         #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
         
-        
         self.addNewTab(QUrl('https://www.google.com'))
         
         self.showMaximized()
         self.setWindowTitle('ACS Browser')
         
+        self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
         
     
     def addNewTab(self, url = None, label="Blank"):
@@ -70,7 +58,6 @@ class NavBar(QMainWindow):
             url = QUrl('https://www.google.com')
 
         browser = QWebEngineView()
-        browser.setPage(customWebEnginePage(browser))
         browser.page().WebAction()
 
               
@@ -82,20 +69,20 @@ class NavBar(QMainWindow):
         
         browser.urlChanged.connect(lambda url, browser=browser:
                                      self.update_urlBar(url, browser))
+        
 
         browser.titleChanged.connect(lambda _, i=currentTabIndex, browser=browser:
                                      self.tabs.setTabText(i, self.tabs.currentWidget().page().title()))
         
+        
         browser.iconChanged.connect(lambda _, browser=browser:
                                      self.updateIcon(browser))
+        
         
         browser.loadFinished.connect(lambda _, browser=browser:
                                      self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self)))
         
         browser.page().loadFinished.connect(self.loadDBMethods)
-
-
-        
         
        # browser.page().profile().cookieStore().deleteAllCookies()
        
