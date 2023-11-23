@@ -3,8 +3,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl
 
 from methods.database_methods import DBMethods
-from history.historyPopup import WindowHistory
-from config.configPopup import ConfigPage
+from history.history import WindowHistory
+from config.config import ConfigPage
 
 import sqlite3
 
@@ -50,7 +50,6 @@ class SideBarMethods(QMainWindow):
             )
                 
             conn.commit()
-
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
             
             
@@ -68,8 +67,8 @@ class SideBarMethods(QMainWindow):
             )
                 
             conn.commit()
-            
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
+            
             
         def showConfig():
          if self.configRequested is None:

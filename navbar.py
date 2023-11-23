@@ -1,3 +1,4 @@
+from ast import Str
 import re
 
 from PyQt5.QtCore import Qt, QUrl
@@ -7,9 +8,10 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from methods.database_methods import DBMethods
 from methods.tabs_methods import TabsMethods
 from methods.sidebar_methods import SideBarMethods
+from config.config import ConfigPage
 #from handleNetwork.setCookie import Cookie
 
-import sys, sqlite3, datetime
+import sys, sqlite3, datetime, json
 
 class NavBar(QMainWindow):
     def __init__(self):
@@ -44,7 +46,7 @@ class NavBar(QMainWindow):
         
         #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
         
-        self.addNewTab(QUrl('https://www.google.com'))
+        self.addNewTab()
         
         self.showMaximized()
         self.setWindowTitle('ACS Browser')
@@ -54,7 +56,7 @@ class NavBar(QMainWindow):
     
     def addNewTab(self, url = None, label="Blank"):
         if url is None or url == ' ':
-            url = QUrl('https://www.google.com')
+            url = QUrl(ConfigPage().loadJson()['newTabURL'])
 
         browser = QWebEngineView()
         browser.page().WebAction()
@@ -87,6 +89,19 @@ class NavBar(QMainWindow):
         url = QUrl(self.urlBar.text())
         urlBarTxt = self.urlBar.text()
         
+        self.searchEngineDefault = ''
+        load = ConfigPage().loadJson()['searchEngine']
+        
+        if load == 'Google':
+            self.searchEngineDefault = 'https://www.google.com/search?q='
+            
+        elif load == 'Yahoo':
+            self.searchEngineDefault = 'https://search.yahoo.com/search?q='
+            
+        elif load == 'Bing':
+            self.searchEngineDefault = 'https://www.bing.com/search?q='
+            
+        
         valid_url = re.compile(
     r"^(http|https)?:?(\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
         )
@@ -98,7 +113,7 @@ class NavBar(QMainWindow):
             
             
         elif '/' not in urlBarTxt:
-            url = f'https://www.google.com/search?q={self.urlBar.text()}'
+            url = f'{self.searchEngineDefault}{self.urlBar.text()}'
             
         self.tabs.currentWidget().load(QUrl.fromUserInput(url))
  
@@ -144,8 +159,8 @@ class NavBar(QMainWindow):
             sys.exit()
 
         self.tabs.removeTab(self.tabs.currentIndex())
-        
-        
+    
+    
     def loadDBMethods(self):
         title = self.tabs.currentWidget().page().title()
         url = DBMethods().convertUrlToStr(self.tabs.currentWidget().page().url())
