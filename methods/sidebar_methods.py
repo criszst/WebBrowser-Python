@@ -25,7 +25,7 @@ class SideBarMethods(QMainWindow):
         main.label.setText(f"Zoom atual: {DBMethods().getCurrentZoomPage(main.tabs.currentWidget().page().url()):.1f}")
         
         def goToHome():
-            main.tabs.currentWidget().setUrl(QUrl('https://www.google.com'))
+            main.tabs.currentWidget().setUrl(QUrl(ConfigPage().loadJson()['homeURL']))
             
         def history():
             if self.historyRequested is None:
