@@ -1,9 +1,8 @@
 import re
-from PyQt5 import QtCore
 
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QLabel, QApplication
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, QWidget, QShortcut, QLabel
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 from methods.database_methods import DBMethods
 from methods.tabs_methods import TabsMethods
@@ -77,10 +76,6 @@ class NavBar(QMainWindow):
         
         browser.iconChanged.connect(lambda _, browser=browser:
                                      self.updateIcon(browser))
-        
-        
-        browser.loadFinished.connect(lambda _, browser=browser:
-                                     self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self)))
         
         browser.page().loadFinished.connect(self.loadDBMethods)
         
@@ -168,3 +163,4 @@ class NavBar(QMainWindow):
         
         zoomInDB = DBMethods().getCurrentZoomPage(self.tabs.currentWidget().page().url())
         self.tabs.currentWidget().setZoomFactor(float(zoomInDB))
+        self.label.setText(f"Zoom atual: {self.tabs.currentWidget().zoomFactor():.1f}")

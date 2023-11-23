@@ -2,6 +2,7 @@ from PyQt5.QtCore import QUrl
 
 import sqlite3, datetime
 
+
 class DBMethods():
     def __init__(self):
         self.conn = sqlite3.connect('browser.db', check_same_thread=False)

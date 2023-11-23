@@ -50,9 +50,9 @@ class SideBarMethods(QMainWindow):
             )
                 
             conn.commit()
-            
 
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
+            
             
         def zoomOut():
             current_tab = main.tabs.currentWidget()
