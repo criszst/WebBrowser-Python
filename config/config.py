@@ -50,6 +50,7 @@ class ConfigPage(QWidget):
        self.searchEngineCombo.addItem('Google')
        self.searchEngineCombo.addItem('Yahoo')
        self.searchEngineCombo.addItem('Bing')
+       self.searchEngineCombo.addItem('DuckDuckGo')
        self.searchEngineCombo.setGeometry(180, 220, 200, 30)
        
        if ConfigMethods().loadJson()['searchEngine'] == "Google":
@@ -60,6 +61,9 @@ class ConfigPage(QWidget):
             
        elif ConfigMethods().loadJson()['searchEngine'] == "Bing":
             self.searchEngineCombo.setCurrentIndex(2)
+            
+       elif ConfigMethods().loadJson()['searchEngine'] == "DuckDuckGo":
+            self.searchEngineCombo.setCurrentIndex(3)
        
        
        #Salvar Dados

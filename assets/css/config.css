@@ -1,7 +1,17 @@
+QLabel {
+    color: #b1b1b1;
+}
+
 QLineEdit {
     border: 10px;
     border-radius: 5px;
     background-color: white !important;
-    color: grey;
+    color: black;
     selection-background-color: #5021ff;
+}
+
+QComboBox {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
 }

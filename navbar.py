@@ -100,6 +100,9 @@ class NavBar(QMainWindow):
         elif load == 'Bing':
             self.searchEngineDefault = 'https://www.bing.com/search?q='
             
+        elif load == 'DuckDuckGo':
+            self.searchEngineDefault = 'https://duckduckgo.com/?q='
+            
         
         valid_url = re.compile(
     r"^(http|https)?:?(\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
