@@ -127,9 +127,6 @@ class SideBarMethods(QMainWindow):
         
         sidebar.addWidget(zoomOut_btn)
         sidebar.addSeparator()
-        
-        for i in range(0, 100):
-            sidebar.addSeparator()
 
         sidebar.addWidget(config_btn)
 

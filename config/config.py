@@ -74,7 +74,7 @@ class ConfigPage(QWidget):
            
        QMetaObject.connectSlotsByName(self)
        
-       self.setGeometry(70, 540, 400, 420)
+       self.setGeometry(70, 340, 400, 420)
        self.setWindowFlags(Qt.WindowType.Popup)
             
         
