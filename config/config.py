@@ -1,12 +1,10 @@
-import json
-from typing import Any
 from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QLineEdit, QComboBox
-from PyQt5.QtCore import Qt, QUrl, QMetaObject
+from PyQt5.QtCore import Qt, QMetaObject
 from PyQt5.QtGui import QIcon
 
-import sqlite3
+from methods.json_methods import ConfigMethods
 
-from matplotlib.font_manager import json_load
+import sqlite3
 
 class ConfigPage(QWidget):
     def __init__(self):
@@ -14,8 +12,6 @@ class ConfigPage(QWidget):
         self.initUIConfig()
         self.conn = sqlite3.connect('browser.db')
         self.curs = self.conn.cursor()
-        
-        self.load = ''
         
         
     def initUIConfig(self):
@@ -31,7 +27,7 @@ class ConfigPage(QWidget):
        self.homeLabel.setGeometry(20, 80, 130, 30)
        
        self.homeEdit = QLineEdit(self)
-       self.homeEdit.setText(f'{self.loadJson()['homeURL']}')
+       self.homeEdit.setText(f'{ConfigMethods().loadJson()['homeURL']}')
        self.homeEdit.setGeometry(180, 80, 200, 30)
        
        
@@ -41,7 +37,7 @@ class ConfigPage(QWidget):
        self.newPageLabel.setGeometry(20, 150, 130, 30)
        
        self.newPageEdit = QLineEdit(self)
-       self.newPageEdit.setText(f'{self.loadJson()['homeURL']}')
+       self.newPageEdit.setText(f'{ConfigMethods().loadJson()['homeURL']}')
        self.newPageEdit.setGeometry(180, 150, 200, 30)
        
        
@@ -56,15 +52,14 @@ class ConfigPage(QWidget):
        self.searchEngineCombo.addItem('Bing')
        self.searchEngineCombo.setGeometry(180, 220, 200, 30)
        
-       if self.loadJson()['searchEngine'] == "Google":
+       if ConfigMethods().loadJson()['searchEngine'] == "Google":
             self.searchEngineCombo.setCurrentIndex(0)
             
-       elif self.loadJson()['searchEngine'] == "Yahoo":
+       elif ConfigMethods().loadJson()['searchEngine'] == "Yahoo":
             self.searchEngineCombo.setCurrentIndex(1)
             
-       elif self.loadJson()['searchEngine'] == "Bing":
+       elif ConfigMethods().loadJson()['searchEngine'] == "Bing":
             self.searchEngineCombo.setCurrentIndex(2)
-    
        
        
        #Salvar Dados
@@ -81,30 +76,16 @@ class ConfigPage(QWidget):
        
        self.setGeometry(70, 540, 400, 420)
        self.setWindowFlags(Qt.WindowType.Popup)
-       
             
         
     def saveAllData(self) -> None:
-        homeText = str(self.homeEdit.text())
-        newPageText = str(self.newPageEdit.text())
-        engineText = str(self.searchEngineCombo.currentText())
-        
-        self.writeJson('homeURL', homeText)
-        self.writeJson('newTabURL', newPageText)
-        self.writeJson('searchEngine', engineText)
-        
-        
-    def writeJson(self, textInJSON: str, textForChange: str) -> None:
-        with open('config.json', 'r') as fileJSON:
-            data = json.load(fileJSON)
-            
-        with open('config.json', 'w', encoding='utf-8') as fileJSON:
-            data[f"{textInJSON}"] = textForChange
-            json.dump(data, fileJSON, indent=4)
-            
-    def loadJson(self):
-        with open('config.json', 'r') as file:
-            return json.load(file)
+        homeText = self.homeEdit.text()
+        newPageText = self.newPageEdit.text()
+        engineText = self.searchEngineCombo.currentText()
+    
+        ConfigMethods().writeJson('homeURL', homeText)
+        ConfigMethods().writeJson('newTabURL', newPageText)
+        ConfigMethods().writeJson('searchEngine', engineText)
 
     def closeConfig(self):
         self.close()

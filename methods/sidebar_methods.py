@@ -5,6 +5,7 @@ from PyQt5.QtCore import QUrl
 from methods.database_methods import DBMethods
 from history.history import WindowHistory
 from config.config import ConfigPage
+from methods.json_methods import ConfigMethods
 
 import sqlite3
 
@@ -25,7 +26,7 @@ class SideBarMethods(QMainWindow):
         main.label.setText(f"Zoom atual: {DBMethods().getCurrentZoomPage(main.tabs.currentWidget().page().url()):.1f}")
         
         def goToHome():
-            main.tabs.currentWidget().setUrl(QUrl(ConfigPage().loadJson()['homeURL']))
+            main.tabs.currentWidget().setUrl(QUrl(ConfigMethods().loadJson()['homeURL']))
             
         def history():
             if self.historyRequested is None:

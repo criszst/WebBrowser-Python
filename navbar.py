@@ -8,7 +8,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from methods.database_methods import DBMethods
 from methods.tabs_methods import TabsMethods
 from methods.sidebar_methods import SideBarMethods
-from config.config import ConfigPage
+from methods.json_methods import ConfigMethods
 #from handleNetwork.setCookie import Cookie
 
 import sys, sqlite3, datetime, json
@@ -56,7 +56,7 @@ class NavBar(QMainWindow):
     
     def addNewTab(self, url = None, label="Blank"):
         if url is None or url == ' ':
-            url = QUrl(ConfigPage().loadJson()['newTabURL'])
+            url = QUrl(ConfigMethods().loadJson()['newTabURL'])
 
         browser = QWebEngineView()
         browser.page().WebAction()
@@ -65,7 +65,6 @@ class NavBar(QMainWindow):
         currentTabIndex = self.tabs.addTab(browser, label)
         self.tabs.setCurrentIndex(currentTabIndex)
         
-        browser.page().profile().clearHttpCache()
         browser.load(url)
         
         browser.urlChanged.connect(lambda url, browser=browser:
@@ -90,7 +89,7 @@ class NavBar(QMainWindow):
         urlBarTxt = self.urlBar.text()
         
         self.searchEngineDefault = ''
-        load = ConfigPage().loadJson()['searchEngine']
+        load = ConfigMethods().loadJson()['searchEngine']
         
         if load == 'Google':
             self.searchEngineDefault = 'https://www.google.com/search?q='
