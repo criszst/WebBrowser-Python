@@ -17,6 +17,11 @@ Clone o repositorio com o comando Git
 git clone https://github.com/Cristi4nSt/WebBrowser-Python
 ```
 
+Entre no diretorio
+```
+cd WebBrowser-Python
+```
+
 Depois, instale as dependencias que estão no arquivo "requirements.txt"
 ```
 python -m pip install -r requirements.txt
