@@ -17,7 +17,3 @@ class BrowserConnect:
             return
         
         main.tabs.setTabIcon(main.tabs.currentIndex(), browser.page().icon())
-        
-        
-
-    
