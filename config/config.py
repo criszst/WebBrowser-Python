@@ -37,9 +37,9 @@ class ConfigPage(QWidget):
        self.newPageLabel.setGeometry(20, 150, 130, 30)
        
        self.newPageEdit = QLineEdit(self)
-       self.newPageEdit.setText(f'{ConfigMethods().loadJson()['homeURL']}')
+       self.newPageEdit.setText(f"{ConfigMethods().loadJson()['homeURL']}")
        self.newPageEdit.setGeometry(180, 150, 200, 30)
-       
+
        
        #Engine de Busca
        self.searchEngineLabel = QLabel(self)
