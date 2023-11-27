@@ -27,7 +27,7 @@ class ConfigPage(QWidget):
        self.homeLabel.setGeometry(20, 80, 130, 30)
        
        self.homeEdit = QLineEdit(self)
-       self.homeEdit.setText(f'{ConfigMethods().loadJson()['homeURL']}')
+       self.homeEdit.setText(f"{ConfigMethods().loadJson()['homeURL']}")
        self.homeEdit.setGeometry(180, 80, 200, 30)
        
        
