@@ -7,7 +7,7 @@ from history.history import WindowHistory
 from config.config import ConfigPage
 from methods.json_methods import ConfigMethods
 
-import sqlite3
+import psutil
 
 class SideBarMethods(QMainWindow):
     def __init__(self):

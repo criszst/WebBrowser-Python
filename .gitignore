@@ -1,6 +1,6 @@
+#pastas aleatorias ai
 /.idea
 /build
-/.vscode
 /dist
 **/__pycache__
 **ProjectSettings.json
@@ -9,8 +9,12 @@
 *.wsuo
 *.vsidx
 
+#vscode
+/.vscode
+/.vs
+
 #sqlite
 *.sqlite
 
 #venv
-.venv
+/venv
