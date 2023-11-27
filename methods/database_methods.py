@@ -2,12 +2,14 @@ from PyQt5.QtCore import QUrl
 
 import sqlite3, datetime
 
-
 class DBMethods():
     def __init__(self):
         self.conn = sqlite3.connect('browser.db', check_same_thread=False)
         self.cursor = self.conn.cursor()
         
+    def insert(self, query, params) -> None:
+        self.cursor.execute(query, params)
+        self.conn.commit()
     
     def convertUrlToStr(self, url: QUrl) -> str:
         urlConverted = str(url)
@@ -22,12 +24,12 @@ class DBMethods():
         return formattedPtBr
     
     
-    def replaceOldData(self, db: str, dataName: str, dataType, numberDataInTable: int) -> None:
-        viewLog = self.cursor.execute(f'SELECT * FROM {db}').fetchall()
+    def replaceOldData(self, database: str, columnName: str, dataType, numberDataInTable: int) -> None:
+        viewLog = self.cursor.execute(f'SELECT * FROM {database}').fetchall()
         
         for i in range(len(viewLog)):
             if dataType == viewLog[i][numberDataInTable]:
-                self.cursor.execute(f'DELETE FROM {db} WHERE {dataName} = ?', [dataType])
+                self.cursor.execute(f'DELETE FROM {database} WHERE {columnName} = ?', [dataType])
                 
         self.conn.commit()
         self.conn.close()

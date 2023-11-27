@@ -9,9 +9,6 @@ from methods.json_methods import ConfigMethods
 
 import sqlite3
 
-conn = sqlite3.connect("browser.db", check_same_thread=False)
-cursor = conn.cursor()
-
 class SideBarMethods(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -45,12 +42,11 @@ class SideBarMethods(QMainWindow):
 
             DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
                 
-            cursor.execute(
-                "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
-                {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor()}
-            )
+            DBMethods().insert(
+                'INSERT INTO zoom(url, zoomFactor) VALUES (:url, :zoomFactor)',
+                {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor}
+                              )
                 
-            conn.commit()
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
             
             
@@ -62,12 +58,11 @@ class SideBarMethods(QMainWindow):
             
             DBMethods().replaceOldData('zoom', 'url', urlTOStr, 1)
             
-            cursor.execute(
-                "INSERT INTO zoom (url,zoomFactor) VALUES (:url,:zoomFactor)", 
-                {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor()}
-            )
+            DBMethods().insert(
+                'INSERT INTO zoom(url, zoomFactor) VALUES (:url, :zoomFactor)',
+                {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor}
+                              )
                 
-            conn.commit()
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
             
             

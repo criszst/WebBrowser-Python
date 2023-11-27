@@ -12,6 +12,6 @@ class ConfigMethods():
             data[f"{textInJSON}"] = textForChange
             json.dump(data, fileJSON, indent=4)
             
-    def loadJson(self):
+    def loadJson(self) :
         with open('config.json', 'r') as file:
             return json.load(file)
