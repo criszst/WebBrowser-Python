@@ -46,7 +46,7 @@ class NavBar(QMainWindow):
         self.addNewTab()
         
         self.showMaximized()
-        self.setWindowTitle('ACS Browser')
+        self.setWindowTitle('socorro q nome eu dou pra esse navegador')
         
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
         
@@ -57,12 +57,10 @@ class NavBar(QMainWindow):
 
         browser = QWebEngineView()
         browser.page().WebAction()
-
+        browser.load(url)
               
         currentTabIndex = self.tabs.addTab(browser, label)
         self.tabs.setCurrentIndex(currentTabIndex)
-        
-        browser.load(url)
         
         browser.urlChanged.connect(lambda url, browser=browser:
                                      BrowserConnect().update_urlBar(self, url, browser))
@@ -76,8 +74,9 @@ class NavBar(QMainWindow):
                                      BrowserConnect().updateIcon(self, browser))
         
         browser.page().loadFinished.connect(self.loadDBMethods)
-        
-       # browser.page().profile().cookieStore().deleteAllCookies()
+
+        print(self.tabs.count())
+        print(browser.page().profile().cookieStore().loadAllCookies())
        
 
     def goToUrl(self):

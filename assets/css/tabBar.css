@@ -1,9 +1,9 @@
 QTabBar{
-    background-color:#1f212e;
+    background-color:#252836;
 }
 
 QTabBar::tab {
-    background-color: #1f212e;
+    background-color: #252836;
     color: #fff;
     padding: 8px 20px; /* 1: baixo 2: lado esquerdo*/
     padding-left: 2px; /* cresce pro lado esquerdo */

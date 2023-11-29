@@ -1,11 +1,18 @@
-from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton
+from ctypes.wintypes import VARIANT_BOOL
+from pyclbr import Class
+from tkinter import Variable
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton, QWidget
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QUrl
+from numpy import var
 
 from methods.database_methods import DBMethods
-from history.history import WindowHistory
-from config.config import ConfigPage
 from methods.json_methods import ConfigMethods
+    
+from history.history import HistoryPage
+from config.config import ConfigPage
+from stats.stats import StatusPage
+
 
 import psutil
 
@@ -14,6 +21,7 @@ class SideBarMethods(QMainWindow):
         super().__init__()
         self.historyRequested = None
         self.configRequested = None
+        self.statsRequested = None
 
 
     def create_sidebar(self, main: QMainWindow):
@@ -27,11 +35,12 @@ class SideBarMethods(QMainWindow):
             
         def history():
             if self.historyRequested is None:
-                self.historyRequested = WindowHistory()
+                self.historyRequested = HistoryPage()
                 self.historyRequested.show()
             else:
                 self.historyRequested.close()
                 self.historyRequested = None
+
                 
 
         def zoomIn():
@@ -66,12 +75,21 @@ class SideBarMethods(QMainWindow):
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
             print(psutil.virtual_memory().percent)
             
+        
+        def stats():            
+            if self.statsRequested is None:
+                self.statsRequested = StatusPage()
+                self.statsRequested.show()
+            else:
+                self.statsRequested.close()
+                self.statsRequested = None
+
             
-        def showConfig():
-         if self.configRequested is None:
+        def config():
+            if self.configRequested is None:
                 self.configRequested = ConfigPage()
                 self.configRequested.show()
-         else:
+            else:
                 self.configRequested.close()
                 self.configRequested = None
 
@@ -102,13 +120,19 @@ class SideBarMethods(QMainWindow):
         zoomOut_btn.setObjectName('zoomOut_btn')
         zoomOut_btn.setToolTip('Diminuir o zoom')
         zoomOut_btn.clicked.connect(zoomOut)
+        
+        stats_btn = QPushButton()
+        stats_btn.setIcon(QIcon('./assets/icons/sidebar/stats.png'))
+        stats_btn.setObjectName('stats_btn')
+        stats_btn.setToolTip('Mostrar Status do Browser')
+        stats_btn.clicked.connect(stats)
 
         
         config_btn = QPushButton()
         config_btn.setIcon(QIcon('./assets/icons/sidebar/configIcon.png'))
         config_btn.setToolTip('Acessar as configurações')
         config_btn.setObjectName('config_btn')
-        config_btn.clicked.connect(showConfig)
+        config_btn.clicked.connect(config)
         
         
     
@@ -122,6 +146,9 @@ class SideBarMethods(QMainWindow):
         sidebar.addSeparator()
         
         sidebar.addWidget(zoomOut_btn)
+        sidebar.addSeparator()
+        
+        sidebar.addWidget(stats_btn)
         sidebar.addSeparator()
 
         sidebar.addWidget(config_btn)

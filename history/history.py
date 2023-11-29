@@ -8,7 +8,7 @@ import navbar
 conn = sqlite3.connect("browser.db", check_same_thread=False)
 cursor = conn.cursor()
 
-class WindowHistory(QWidget):
+class HistoryPage(QWidget):
     
     def __init__(self):
         super().__init__()
