@@ -13,8 +13,11 @@
 /.vscode
 /.vs
 
-#sqlite
+#sqlited
 *.sqlite
 
 #venv
 /venv
+
+#testes 
+info.py
