@@ -46,7 +46,7 @@ class NavBar(QMainWindow):
         self.addNewTab()
         
         self.showMaximized()
-        self.setWindowTitle('socorro q nome eu dou pra esse navegador')
+        self.setWindowTitle('ACS Browser')
         
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
         
