@@ -1,6 +1,4 @@
-# Browser
 ![browse-screenshot](https://github.com/Cristi4nSt/WebBrowser-Python/blob/main/assets/browser/browserImage.png?raw=true)
-Inspirado no Opera One
 
 # Funções
 Atualmente possui funções básicas de todo navegador (recarregar a página, voltar uma página, visualizar histórico, etc.)
