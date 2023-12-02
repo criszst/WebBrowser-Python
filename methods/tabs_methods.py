@@ -10,9 +10,6 @@ class TabsMethods(QTabWidget):
         tabs = QTabWidget()
         tabs.setDocumentMode(True)
         tabs.setTabsClosable(True)
-        tabs.tabBarDoubleClicked.connect(fun.tab_open_doubleclick)
-        tabs.currentChanged.connect(fun.current_tab_changed)
-        tabs.tabCloseRequested.connect(fun.close_current_tab)
         
         with open("assets/css/tabBar.css", "r") as style:
             tabs.setStyleSheet(style.read())

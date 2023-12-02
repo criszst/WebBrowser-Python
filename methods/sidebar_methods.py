@@ -1,10 +1,8 @@
-from ctypes.wintypes import VARIANT_BOOL
-from pyclbr import Class
-from tkinter import Variable
 from PyQt5.QtWidgets import QMainWindow, QToolBar, QPushButton, QWidget
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QUrl
-from numpy import var
+from PyQt5.QtCore import QUrl, QCoreApplication
+
+from icecream import ic
 
 from methods.database_methods import DBMethods
 from methods.json_methods import ConfigMethods
@@ -12,7 +10,6 @@ from methods.json_methods import ConfigMethods
 from history.history import HistoryPage
 from config.config import ConfigPage
 from stats.stats import StatusPage
-
 
 import psutil
 
@@ -73,7 +70,7 @@ class SideBarMethods(QMainWindow):
                               )
                 
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
-            print(psutil.virtual_memory().percent)
+            ic(psutil.virtual_memory().percent)
             
         
         def stats():            

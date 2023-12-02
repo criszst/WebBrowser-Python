@@ -1,7 +1,7 @@
-from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtCore import Qt, QUrl, QCoreApplication
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QShortcut, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-
+from icecream import ic
 from methods.database_methods import DBMethods
 
 from methods.connect_methods import BrowserConnect
@@ -11,20 +11,25 @@ from methods.sidebar_methods import SideBarMethods
 from methods.json_methods import ConfigMethods
 #from handleNetwork.setCookie import Cookie
 
-import sys, re, datetime
+import sys, re, datetime, psutil
+
+
 
 class NavBar(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_tabs()
 
-    def init_tabs(self):        
-        self.tabs = TabsMethods().create_tabs(self) 
-        self.setCentralWidget(self.tabs)
+    def init_tabs(self):
+        self.tabs = TabsMethods().create_tabs(self)
         
+        self.tabs.tabBarDoubleClicked.connect(self.tab_open_doubleclick)
+        self.tabs.currentChanged.connect(self.current_tab_changed)
+        self.tabs.tabCloseRequested.connect(self.close_current_tab)
+        self.setCentralWidget(self.tabs)
+       
         self.nav_toolbar = TabsMethods().create_navigation_toolbar(self)
         self.addToolBar(self.nav_toolbar)
-
         
         self.urlBar = QLineEdit()
         self.urlBar.returnPressed.connect(self.goToUrl)
@@ -74,9 +79,8 @@ class NavBar(QMainWindow):
                                      BrowserConnect().updateIcon(self, browser))
         
         browser.page().loadFinished.connect(self.loadDBMethods)
-
-        print(self.tabs.count())
-        print(browser.page().profile().cookieStore().loadAllCookies())
+        
+        print(psutil.Process().memory_percent())
        
 
     def goToUrl(self):
@@ -84,19 +88,21 @@ class NavBar(QMainWindow):
         urlBarTxt = self.urlBar.text()
         
         self.searchEngineDefault = ''
-        load = ConfigMethods().loadJson()['searchEngine']
         
-        if load == 'Google':
-            self.searchEngineDefault = 'https://www.google.com/search?q='
+        match ConfigMethods().loadJson()['searchEngine']:
+            case 'Google':
+                self.searchEngineDefault = 'https://www.google.com/search?q='
+            case 'Yahoo':
+                self.searchEngineDefault = 'https://search.yahoo.com/search?q='
             
-        elif load == 'Yahoo':
-            self.searchEngineDefault = 'https://search.yahoo.com/search?q='
+            case 'Bing':
+                self.searchEngineDefault = 'https://www.bing.com/search?q='
             
-        elif load == 'Bing':
-            self.searchEngineDefault = 'https://www.bing.com/search?q='
+            case 'DuckDuckGo':
+                self.searchEngineDefault = 'https://duckduckgo.com/?q='
             
-        elif load == 'DuckDuckGo':
-            self.searchEngineDefault = 'https://duckduckgo.com/?q='
+            case _:
+                self.searchEngineDefault = 'https://www.google.com/search?q='
             
         
         valid_url = re.compile(
@@ -112,12 +118,14 @@ class NavBar(QMainWindow):
         elif '/' not in urlBarTxt:
             url = f'{self.searchEngineDefault}{self.urlBar.text()}'
             
-        self.tabs.currentWidget().load(QUrl.fromUserInput(url))
+        self.tabs.currentWidget().load(QUrl(url))
       
 
     def tab_open_doubleclick(self, currentTabIndex):
         if currentTabIndex == -1:
             self.addNewTab()
+            ic(self.tabs.currentIndex())
+            ic()
             
             
     def current_tab_changed(self):
@@ -129,7 +137,10 @@ class NavBar(QMainWindow):
     def close_current_tab(self):
         if self.tabs.count() < 2:
             sys.exit()
-
+        
+        self.tabs.currentWidget().close()
+        #esse aq termina o processo do widget atual, impedindo que uma aba ja fechada venha ocupar espaço na memoria
+        #assim, o browser pelo menos n fica ocupando gigas na memoria qnd se tem apenas 1 aba aberta
         self.tabs.removeTab(self.tabs.currentIndex())
         
     

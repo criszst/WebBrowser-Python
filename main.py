@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtGui import QIcon
 
-import navbar, sys, psutil
+import navbar, sys
 
 app = QApplication(sys.argv)
 app.setApplicationName("Simple Browser")

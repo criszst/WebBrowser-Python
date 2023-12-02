@@ -2,6 +2,10 @@ from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QLineEdit, QComboBox
 from PyQt5.QtCore import Qt, QMetaObject
 from PyQt5.QtGui import QIcon
 
+from icecream import ic
+
+ic.configureOutput(prefix='DEBUG: ')
+
 import psutil
 
 class StatusPage(QWidget):
@@ -21,15 +25,14 @@ class StatusPage(QWidget):
            
 
        
-       print(psutil.Process().memory_info().rss / (1024 ** 2))
-       print(psutil.Process().cpu_percent())
+       ic(psutil.Process().memory_info().rss / (1024 ** 2))
+       ic(psutil.Process().cpu_percent())
+       ic(psutil.Process().pid)
+       ic(psutil.Process().ppid)
+       ic(psutil.Process())
        #self.setGeometry(70, 340, 400, 420)
        QMetaObject.connectSlotsByName(self)
        self.setWindowFlags(Qt.WindowType.Popup)
-       
-    def calculateGeometry(self):
-        widthPage = self.width()
-        heightPage = self.height()
        
     def closeStatus(self):
         self.close()
