@@ -1,6 +1,8 @@
-from PyQt5.QtCore import Qt, QUrl, QCoreApplication
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QShortcut, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
+
 from icecream import ic
 from methods.database_methods import DBMethods
 
@@ -79,8 +81,6 @@ class NavBar(QMainWindow):
                                      BrowserConnect().updateIcon(self, browser))
         
         browser.page().loadFinished.connect(self.loadDBMethods)
-        
-        print(psutil.Process().memory_percent())
        
 
     def goToUrl(self):
@@ -124,9 +124,7 @@ class NavBar(QMainWindow):
     def tab_open_doubleclick(self, currentTabIndex):
         if currentTabIndex == -1:
             self.addNewTab()
-            ic(self.tabs.currentIndex())
-            ic()
-            
+                        
             
     def current_tab_changed(self):
         url = self.tabs.currentWidget().url()

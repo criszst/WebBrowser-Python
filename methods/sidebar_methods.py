@@ -70,7 +70,6 @@ class SideBarMethods(QMainWindow):
                               )
                 
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
-            ic(psutil.virtual_memory().percent)
             
         
         def stats():            
