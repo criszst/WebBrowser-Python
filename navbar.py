@@ -139,7 +139,7 @@ class NavBar(QMainWindow):
             sys.exit()
         
         self.tabs.currentWidget().close()
-        #esse aq termina o processo do widget atual, impedindo que uma aba ja fechada venha ocupar espaço na memoria
+        #o .close() termina o processo do widget atual, impedindo que uma aba ja fechada venha ocupar espaço na memoria
         #assim, o browser pelo menos n fica ocupando gigas na memoria qnd se tem apenas 1 aba aberta
         self.tabs.removeTab(self.tabs.currentIndex())
         

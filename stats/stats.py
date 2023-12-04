@@ -27,9 +27,7 @@ class StatusPage(QWidget):
        
        ic(psutil.Process().memory_info().rss / (1024 ** 2))
        ic(psutil.Process().cpu_percent())
-       ic(psutil.Process().pid)
-       ic(psutil.Process().ppid)
-       ic(psutil.Process())
+       
        #self.setGeometry(70, 340, 400, 420)
        QMetaObject.connectSlotsByName(self)
        self.setWindowFlags(Qt.WindowType.Popup)
