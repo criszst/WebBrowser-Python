@@ -93,7 +93,7 @@ class SideBarMethods(QMainWindow):
         home_btn = QPushButton()
         home_btn.setIcon(QIcon('./assets/icons/sidebar/casa.png'))
         home_btn.setObjectName('home_btn')
-        home_btn.setToolTip('Ir para o google')
+        home_btn.setToolTip('Ir para a url inicial')
         home_btn.clicked.connect(goToHome)
         
 
@@ -117,11 +117,11 @@ class SideBarMethods(QMainWindow):
         zoomOut_btn.setToolTip('Diminuir o zoom')
         zoomOut_btn.clicked.connect(zoomOut)
         
-        stats_btn = QPushButton()
-        stats_btn.setIcon(QIcon('./assets/icons/sidebar/stats.png'))
-        stats_btn.setObjectName('stats_btn')
-        stats_btn.setToolTip('Mostrar Status do Browser')
-        stats_btn.clicked.connect(stats)
+        # stats_btn = QPushButton()
+        # stats_btn.setIcon(QIcon('./assets/icons/sidebar/stats.png'))
+        # stats_btn.setObjectName('stats_btn')
+        # stats_btn.setToolTip('Mostrar Status do Browser')
+        # stats_btn.clicked.connect(stats)
 
         
         config_btn = QPushButton()
@@ -144,7 +144,7 @@ class SideBarMethods(QMainWindow):
         sidebar.addWidget(zoomOut_btn)
         sidebar.addSeparator()
         
-        sidebar.addWidget(stats_btn)
+        # sidebar.addWidget(stats_btn)
         sidebar.addSeparator()
 
         sidebar.addWidget(config_btn)

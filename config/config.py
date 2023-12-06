@@ -90,12 +90,12 @@ class ConfigPage(QWidget):
         engineText = self.searchEngineCombo.currentText()
 
 
-        fnReplace = self.replaceUrl({0: homeText, 1: newPageText})
-        ic(fnReplace['homeURL'])
-        ic(fnReplace['newPageURL'])
+        fncReplace = self.replaceUrl({0: homeText, 1: newPageText})
+        ic(fncReplace['homeURL'])
+        ic(fncReplace['newPageURL'])
 
-        ConfigMethods().writeJson('homeURL', fnReplace['homeURL'])
-        ConfigMethods().writeJson('newTabURL', fnReplace['newPageURL'])
+        ConfigMethods().writeJson('homeURL', fncReplace['homeURL'])
+        ConfigMethods().writeJson('newTabURL', fncReplace['newPageURL'])
         ConfigMethods().writeJson('searchEngine', engineText)
 
 

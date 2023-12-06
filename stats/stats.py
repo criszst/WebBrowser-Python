@@ -19,6 +19,7 @@ class StatusPage(QWidget):
        self.closeBtn.setIcon(QIcon('./assets/icons/sidebar/closeHistory.png'))
        self.closeBtn.clicked.connect(self.closeStatus)
        self.closeBtn.setGeometry(5, 10, 690, 30)
+       
       
        with open('assets/css/config.css') as file:
             self.setStyleSheet(file.read())

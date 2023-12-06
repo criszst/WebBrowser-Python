@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QMainWindow, QTabWidget, QToolBar, QAction
+from PyQt5.QtWidgets import QMainWindow, QTabWidget, QToolBar, QPushButton
 from PyQt5.QtGui import QIcon
 
 class TabsMethods(QTabWidget):
@@ -6,7 +6,7 @@ class TabsMethods(QTabWidget):
         super().__init__()
 
 
-    def create_tabs(self, fun: QMainWindow):
+    def create_tabs(self):
         tabs = QTabWidget()
         tabs.setDocumentMode(True)
         tabs.setTabsClosable(True)
@@ -30,26 +30,38 @@ class TabsMethods(QTabWidget):
         nav_toolbar = QToolBar("Navegação")
         nav_toolbar.setMovable(False)
         
-        back_action = QAction(QIcon('./assets/icons/toolbar/back.png'), 'Voltar uma página', parent)
-        back_action.triggered.connect(goBack)
+        back_btn = QPushButton()
+        back_btn.setIcon(QIcon('./assets/icons/toolbar/back.png'))
+        back_btn.setObjectName('back_btn')
+        back_btn.setToolTip('Voltar uma página')
+        back_btn.clicked.connect(goBack)
         
-        front_action = QAction(QIcon('./assets/icons/toolbar/forward.png'), 'Avançar uma página', parent)
-        front_action.triggered.connect(goForward)
+        forward_btn = QPushButton()
+        forward_btn.setIcon(QIcon('./assets/icons/toolbar/forward.png'))
+        forward_btn.setObjectName('forward_btn')
+        forward_btn.setToolTip('Avançar uma página')
+        forward_btn.clicked.connect(goForward)
         
-        reload_action = QAction(QIcon('./assets/icons/toolbar/reload.png'), 'Recarregar a página', parent)
-        reload_action.setShortcut('Ctrl+R')
-        reload_action.triggered.connect(reload)
+        reload_btn = QPushButton()
+        reload_btn.setIcon(QIcon('./assets/icons/toolbar/reload.png'))
+        reload_btn.setObjectName('reload_btn')
+        reload_btn.setToolTip('Recarregar a página')
+        reload_btn.clicked.connect(reload)
         
-        ssl_certification = QAction(QIcon('./assets/icons/toolbar/ssl_certification'), 'A página é segura', parent)
+        ssl_certification = QPushButton()
+        ssl_certification.setIcon(QIcon('./assets/icons/toolbar/ssl_certification.png'))
+        ssl_certification.setObjectName('ssl_certification')
+        ssl_certification.setToolTip('A página é segura')
+        #ssl_certification.clicked.connect(goBack)
         
         
-        nav_toolbar.addAction(back_action)
-        nav_toolbar.addAction(front_action)
+        nav_toolbar.addWidget(back_btn)
+        nav_toolbar.addWidget(forward_btn)
         
-        nav_toolbar.addAction(reload_action)
+        nav_toolbar.addWidget(reload_btn)
         
         nav_toolbar.addSeparator()
         
-        nav_toolbar.addAction(ssl_certification)
+        nav_toolbar.addWidget(ssl_certification)
         
         return nav_toolbar

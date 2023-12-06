@@ -9,7 +9,6 @@ conn = sqlite3.connect("browser.db", check_same_thread=False)
 cursor = conn.cursor()
 
 class HistoryPage(QWidget):
-    
     def __init__(self):
         super().__init__()
         layout = QGridLayout()
@@ -28,10 +27,11 @@ class HistoryPage(QWidget):
         layout.addWidget(self.historyList)
         
         self.setLayout(layout)    
-        self.setGeometry(70, 140, 400, 420)
+        self.setGeometry(70, 140, 400, 520)
                          #X  #Y  #Width #Height
         
         self.setWindowFlags(Qt.WindowType.Popup)
+        
         
     def addItemHistory(self):
         info = cursor.execute("SELECT * FROM history")
@@ -40,7 +40,8 @@ class HistoryPage(QWidget):
         for items in siteList:
             siteFormatted = f'{items[1]} - {items[3]}'   
             self.historyList.addItem(siteFormatted)
-            
+
+
     def itemClicked(self, item):
         siteName = item.text()
         #print(len(siteName)) #28
@@ -52,7 +53,6 @@ class HistoryPage(QWidget):
         url = info.fetchall()[0][2]
         
         mainWindow = navbar.NavBar()
-        #mainWindow.tabs.setCurrentWidget(mainWindow.returnCurrentTab(url=QUrl(url)))
         mainWindow.tabs.currentWidget().setUrl(QUrl(url))
         
         

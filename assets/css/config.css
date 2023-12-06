@@ -6,12 +6,12 @@ QLineEdit {
     border: 10px;
     border-radius: 5px;
     background-color: white !important;
-    color: black;
+    color: #484d64;
     selection-background-color: #5021ff;
 }
 
 QComboBox {
     background-color: white;
-    color: black;
+    color: #484d64;
     border-radius: 5px;
 }

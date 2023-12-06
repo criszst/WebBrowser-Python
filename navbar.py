@@ -2,8 +2,6 @@ from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QShortcut, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
-
-from icecream import ic
 from methods.database_methods import DBMethods
 
 from methods.connect_methods import BrowserConnect
@@ -11,10 +9,8 @@ from methods.tabs_methods import TabsMethods
 from methods.sidebar_methods import SideBarMethods
 
 from methods.json_methods import ConfigMethods
-#from handleNetwork.setCookie import Cookie
 
-import sys, re, datetime, psutil
-
+import sys, re, datetime
 
 
 class NavBar(QMainWindow):
@@ -23,7 +19,7 @@ class NavBar(QMainWindow):
         self.init_tabs()
 
     def init_tabs(self):
-        self.tabs = TabsMethods().create_tabs(self)
+        self.tabs = TabsMethods().create_tabs()
         
         self.tabs.tabBarDoubleClicked.connect(self.tab_open_doubleclick)
         self.tabs.currentChanged.connect(self.current_tab_changed)
@@ -63,7 +59,8 @@ class NavBar(QMainWindow):
             url = QUrl(ConfigMethods().loadJson()['newTabURL'])
 
         browser = QWebEngineView()
-        browser.page().WebAction()
+        browser.setMouseTracking(True)
+        browser.setFocus()
         browser.load(url)
               
         currentTabIndex = self.tabs.addTab(browser, label)
@@ -128,7 +125,6 @@ class NavBar(QMainWindow):
             
     def current_tab_changed(self):
         url = self.tabs.currentWidget().url()
-
         BrowserConnect().update_urlBar(self, url, self.tabs.currentWidget())
         
          
