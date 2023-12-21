@@ -1,5 +1,4 @@
 from PyQt5.QtCore import Qt, QUrl
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QLineEdit, QShortcut, QLabel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from methods.database_methods import DBMethods

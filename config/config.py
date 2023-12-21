@@ -91,8 +91,6 @@ class ConfigPage(QWidget):
 
 
         fncReplace = self.replaceUrl({0: homeText, 1: newPageText})
-        ic(fncReplace['homeURL'])
-        ic(fncReplace['newPageURL'])
 
         ConfigMethods().writeJson('homeURL', fncReplace['homeURL'])
         ConfigMethods().writeJson('newTabURL', fncReplace['newPageURL'])
