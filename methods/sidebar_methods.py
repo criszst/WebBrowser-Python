@@ -52,7 +52,7 @@ class SideBarMethods(QMainWindow):
                 'INSERT INTO zoom(url, zoomFactor) VALUES (:url, :zoomFactor)',
                 {"url": urlTOStr, "zoomFactor": current_tab.zoomFactor()}
                               )
-                
+                    
             main.label.setText(f"Zoom atual: {current_tab.zoomFactor():.1f}")
             
             

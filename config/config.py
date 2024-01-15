@@ -39,7 +39,7 @@ class ConfigPage(QWidget):
        self.newPageLabel.setGeometry(20, 150, 130, 30)
        
        self.newPageEdit = QLineEdit(self)
-       self.newPageEdit.setText(f"{ConfigMethods().loadJson()['homeURL']}")
+       self.newPageEdit.setText(f"{ConfigMethods().loadJson()['newTabURL']}")
        self.newPageEdit.setGeometry(180, 150, 200, 30)
 
 
@@ -90,7 +90,7 @@ class ConfigPage(QWidget):
         engineText = self.searchEngineCombo.currentText()
 
 
-        fncReplace = self.replaceUrl({0: homeText, 1: newPageText})
+        fncReplace = self.replaceUrl({'homeURL': homeText, 'newPageUrl': newPageText})
 
         ConfigMethods().writeJson('homeURL', fncReplace['homeURL'])
         ConfigMethods().writeJson('newTabURL', fncReplace['newPageURL'])
@@ -98,10 +98,14 @@ class ConfigPage(QWidget):
 
 
     def replaceUrl(self, url: dict) -> dict:
-        if not str(url[0]).startswith('https://') and not str(url[1]).startswith('https://'):
-            return {'homeURL': f'https://{url[0]}', 'newPageURL': f'https://{url[1]}'}
+        newDict = {}
+        if not str(url['homeURL']).startswith('https://'): 
+            newDict = {'homeURL': f'https://{url['homeURL']}', 'newPageURL': f'{ConfigMethods().loadJson()['newTabURL']}'}
 
-        return {'homeURL': url[0], 'newPageURL': url[1]}
+        elif not str(url['newPageUrl']).startswith('https://'):
+            newDict = {'homeURL': f'{ConfigMethods().loadJson()['homeURL']}', 'newPageURL': f'https://{url['newPageURL']}'}
+            
+        return newDict
 
 
     def closeConfig(self):
