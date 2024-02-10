@@ -9,6 +9,8 @@ from methods.sidebar_methods import SideBarMethods
 
 from methods.json_methods import ConfigMethods
 
+from icecream import ic
+
 import sys, re, datetime
 
 
@@ -44,26 +46,31 @@ class NavBar(QMainWindow):
         self.closeShortcut.activated.connect(self.close_current_tab)
         
         #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
+        recentlyUrls = DBMethods().getRecentlyUrls()
+        ic(recentlyUrls)
         
-        self.addNewTab()
+        titlesUrls = [(item[1], item[2]) for item in recentlyUrls]
+        
+        for title, url in titlesUrls:
+            self.addNewTab(title, QUrl(url))
         
         self.showMaximized()
         self.setWindowTitle('ACS Browser')
         
         self.addToolBar(Qt.ToolBarArea.LeftToolBarArea, SideBarMethods().create_sidebar(self))
-        
     
-    def addNewTab(self, url = None, label="Blank"):
-        if url is None or url == ' ':
+    
+    def addNewTab(self, title = 'No Title Find',  url = None, label="Blank",):
+        if url is None:
             url = QUrl(ConfigMethods().loadJson()['newTabURL'])
 
         browser = QWebEngineView()
-        browser.setMouseTracking(True)
-        browser.setFocus()
         browser.load(url)
               
         currentTabIndex = self.tabs.addTab(browser, label)
         self.tabs.setCurrentIndex(currentTabIndex)
+        self.tabs.setTabText(currentTabIndex, title)
+        
         
         browser.urlChanged.connect(lambda url, browser=browser:
                                      BrowserConnect().update_urlBar(self, url, browser))
@@ -77,6 +84,8 @@ class NavBar(QMainWindow):
                                      BrowserConnect().updateIcon(self, browser))
         
         browser.page().loadFinished.connect(self.loadDBMethods)
+        
+
        
 
     def goToUrl(self):
@@ -116,10 +125,12 @@ class NavBar(QMainWindow):
             
         self.tabs.currentWidget().load(QUrl(url))
       
+      
 
     def tab_open_doubleclick(self, currentTabIndex):
         if currentTabIndex == -1:
             self.addNewTab()
+                        
                         
             
     def current_tab_changed(self):
@@ -141,7 +152,9 @@ class NavBar(QMainWindow):
         title = self.tabs.currentWidget().page().title()
         url = DBMethods().convertUrlToStr(self.tabs.currentWidget().page().url())
         date = DBMethods().convertDateToBR(datetime.datetime.now())
-    
+        
+        
+        # history
         DBMethods().replaceOldData('history', 'url', url, 2)
 
 
@@ -150,6 +163,12 @@ class NavBar(QMainWindow):
             {"title": title, "url": url, "date": date}
                       )
         
+        # zoom
         zoomInDB = DBMethods().getCurrentZoomPage(self.tabs.currentWidget().page().url())
         self.tabs.currentWidget().setZoomFactor(float(zoomInDB))
         self.label.setText(f"Zoom atual: {self.tabs.currentWidget().zoomFactor():.1f}")
+        
+        
+        # save recently page
+        DBMethods().replaceOldData('tabs', 'url', url, 2)
+        DBMethods().saveRecentlyPage(title, url)

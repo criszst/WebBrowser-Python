@@ -1,3 +1,4 @@
+from icecream import ic
 from PyQt5.QtCore import QUrl
 
 import sqlite3, datetime
@@ -45,3 +46,18 @@ class DBMethods():
             zoom = getInfoFromUrl[i][2]
 
         return float(zoom)
+    
+    def saveRecentlyPage(self, title: str, url: str) -> None:
+
+        self.insert(
+                'INSERT INTO tabs(title, url) VALUES (:title, :url)',
+                {"title": title, "url": url}
+                              )
+        
+    def getRecentlyUrls(self) -> list:
+        query = self.cursor.execute('SELECT * FROM tabs').fetchall()
+        
+        return query
+        
+        
+                
