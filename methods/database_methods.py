@@ -55,9 +55,7 @@ class DBMethods():
                               )
         
     def getRecentlyUrls(self) -> list:
-        query = self.cursor.execute('SELECT * FROM tabs').fetchall()
-        
-        return query
+        return self.cursor.execute('SELECT * FROM tabs').fetchall()
         
         
                 

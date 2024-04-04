@@ -47,9 +47,9 @@ class NavBar(QMainWindow):
         
         #self.setWindowFlags(Qt.WindowType.FramelessWindowHint) -> retira os botoes de fechar, minimizar e maximizar
         recentlyUrls = DBMethods().getRecentlyUrls()
-        ic(recentlyUrls)
         
         titlesUrls = [(item[1], item[2]) for item in recentlyUrls]
+        ic(titlesUrls)
         
         for title, url in titlesUrls:
             self.addNewTab(title, QUrl(url))
@@ -86,7 +86,6 @@ class NavBar(QMainWindow):
         browser.page().loadFinished.connect(self.loadDBMethods)
         
 
-       
 
     def goToUrl(self):
         url = QUrl(self.urlBar.text())
