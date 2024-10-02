@@ -1,35 +1,35 @@
 ![browse-screenshot](https://github.com/Cristi4nSt/WebBrowser-Python/blob/main/assets/browser/browserImage.png?raw=true)
 
 # Funções
-Atualmente possui funções básicas de todo navegador (recarregar a página, voltar uma página, visualizar histórico, etc.)
+It currently has basic functions of any browser (reloading the page, going back a page, viewing history, etc.)
 
-O zoom é salvo na DataBase, então caso você feche o navegador e abra depois, o zoom anteriormente definido ainda continuará
+The zoom is saved in the Database, so if you close the browser and open it later, the previously defined zoom will still be present
 
-É possivel configurar qual motor de busca deseja usar (google, yahoo, bing ou o DuckDuckGo)
+You can configure which search engine you want to use (google, yahoo, bing or DuckDuckGo)
 <br>
-Também dá pra configurar a url do botão inicial e a url que abrirá quando você abrir o browser ou uma nova aba
+You can also configure the URL of the home button and the URL that will open when you open the browser or a new tab
 
-# Instalação
-Clone o repositorio com o comando Git
+# Installation
+Clone the repository with the Git commandt
 ```
 git clone https://github.com/Cristi4nSt/WebBrowser-Python
 ```
 
-Entre no diretório
+Open the directory
 ```
 cd WebBrowser-Python
 ```
 
-Depois, instale as dependencias que estão no arquivo "requirements.txt"
+Then, install the dependencies that are in the "requirements.txt" file.
 ```
 python -m pip install -r requirements.txt
 ```
 
-Por último, execute o browser
+Finally, run the browser
 ```
 python main.py
 ```
 
-# Dependências
-- Python 3.12.0 ou superior
+# Dependencies
+- Python 3.12.0 or higher
 - PyQt5 5.15.9
