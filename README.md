@@ -10,7 +10,7 @@ You can configure which search engine you want to use (google, yahoo, bing or Du
 You can also configure the URL of the home button and the URL that will open when you open the browser or a new tab
 
 # Installation
-Clone the repository with the Git commandt
+Clone the repository with the Git command
 ```
 git clone https://github.com/Cristi4nSt/WebBrowser-Python
 ```
