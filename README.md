@@ -12,7 +12,8 @@ You can also configure the URL of the home button and the URL that will open whe
 # Installation
 Clone the repository with the Git command
 ```
-git clone https://github.com/Cristi4nSt/WebBrowser-Python
+git clone
+https://github.com/criszst/WebBrowser-Python.git
 ```
 
 Open the directory
